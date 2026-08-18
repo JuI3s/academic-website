@@ -380,13 +380,14 @@ footer {
     gap: 1.75rem;
   }
 
-  .portrait {
-    width: 150px;
-    height: 150px;
+  .intro-side {
+    width: 100%;
   }
 
-  .intro-side {
-    width: auto;
+  .portrait {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
   }
 
   h1 {
