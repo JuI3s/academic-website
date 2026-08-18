@@ -56,5 +56,10 @@ Colors, fonts, and dark mode are configured via CSS variables at the top of `sty
 
 ## Deploying
 
-Any static host works (GitHub Pages, Netlify, university web space). Upload
-`index.html`, `styles.css`, `profile-pic.jpg`, and the `content/` folder.
+Hosted on GitHub Pages at https://jui3s.github.io/academic-website/.
+
+Push to `main` to publish:
+
+```bash
+git add -A && git commit -m "Update site" && git push
+```
