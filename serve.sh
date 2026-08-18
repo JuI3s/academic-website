@@ -7,6 +7,8 @@ cd "$(dirname "$0")"
 
 PORT="${1:-8000}"
 
+./build.sh
+
 # Kill anything already listening on the port so re-runs just work
 if lsof -ti tcp:"$PORT" >/dev/null 2>&1; then
   echo "Port $PORT is in use — stopping the existing process."
