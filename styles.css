@@ -78,12 +78,19 @@ a:hover {
 .intro-side {
   flex-shrink: 0;
   width: 220px;
-  text-align: center;
+  text-align: left;
+}
+
+.intro-links {
+  margin: 0.6rem 0 0;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
 .intro-address,
 .intro-email {
-  margin: 0.6rem 0 0;
+  margin: 0.35rem 0 0;
   font-family: var(--sans);
   font-size: 0.85rem;
   color: var(--link);
@@ -91,14 +98,7 @@ a:hover {
 }
 
 .intro-email {
-  margin-top: 0.25rem;
-  white-space: nowrap;
-}
-
-.intro-links {
-  margin: 0.25rem 0 0;
-  font-family: var(--sans);
-  font-size: 0.85rem;
+  margin-top: 0;
 }
 
 h1 {
@@ -405,8 +405,10 @@ footer {
     box-shadow: none;
   }
 
+  .intro-links,
+  .intro-address,
   .intro-email {
-    white-space: normal;
+    padding: 0 1.5rem;
   }
 
   h1 {
