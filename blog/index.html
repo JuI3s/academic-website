@@ -20,29 +20,38 @@
     <section id="blog">
       <h2>Technical Blog</h2>
 
-      <!-- One <li> per post. Newest first. -->
+      <nav class="tag-nav" aria-label="Tags">
+        <a href="index.html" data-tag="">All</a>
+        <a href="index.html?tag=algebraic-geometry" data-tag="algebraic-geometry">Algebraic Geometry</a>
+        <a href="index.html?tag=number-theory" data-tag="number-theory">Number Theory</a>
+        <a href="index.html?tag=cryptography" data-tag="cryptography">Cryptography</a>
+        <a href="index.html?tag=distributed-systems" data-tag="distributed-systems">Distributed Systems</a>
+        <a href="index.html?tag=category-theory" data-tag="category-theory">Category Theory</a>
+        <a href="index.html?tag=computational-mathematics" data-tag="computational-mathematics">Computational Mathematics</a>
+      </nav>
+
       <ul class="blog-list">
-        <li>
+        <li data-tags="distributed-systems category-theory algebraic-geometry">
           <span class="blog-date">13 Jun 2026</span>
           <a href="consensus-is-a-sheaf-condition.html">Consensus is a sheaf condition</a>
         </li>
-        <li>
+        <li data-tags="cryptography computational-mathematics">
           <span class="blog-date">12 Jun 2026</span>
           <a href="deriving-concrete-parameters-from-dark.html">Deriving concrete parameters from DARK</a>
         </li>
-        <li>
+        <li data-tags="number-theory computational-mathematics">
           <span class="blog-date">23 May 2026</span>
           <a href="the-unit-distance-problem.html">The unit distance problem</a>
         </li>
-        <li>
+        <li data-tags="number-theory cryptography">
           <span class="blog-date">1 May 2026</span>
           <a href="s-unit-log-embedding-and-the-class-number-formula.html">S-unit, log embedding, and the class number formula</a>
         </li>
-        <li>
+        <li data-tags="cryptography number-theory algebraic-geometry">
           <span class="blog-date">10 Oct 2025</span>
           <a href="millers-algorithm-and-pairing.html">Miller&rsquo;s algorithm and pairing</a>
         </li>
-        <li>
+        <li data-tags="algebraic-geometry computational-mathematics">
           <span class="blog-date">16 Aug 2025</span>
           <a href="groebner-bases-and-geometry.html">Gr&ouml;bner bases and geometry</a>
         </li>
@@ -54,5 +63,16 @@
     </footer>
 
   </main>
+  <script>
+    const tag = new URLSearchParams(location.search).get("tag") || "";
+    document.querySelectorAll(".tag-nav a").forEach((a) => {
+      if (a.dataset.tag === tag) a.classList.add("active");
+    });
+    if (tag) {
+      document.querySelectorAll(".blog-list li").forEach((li) => {
+        li.hidden = !li.dataset.tags.split(" ").includes(tag);
+      });
+    }
+  </script>
 </body>
 </html>

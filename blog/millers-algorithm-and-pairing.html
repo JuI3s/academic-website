@@ -21,6 +21,11 @@
     <article class="post">
       <h1 class="post-title">Miller&rsquo;s algorithm and pairing</h1>
       <p class="post-date">10 October 2025</p>
+      <p class="post-tags">
+        <a href="index.html?tag=algebraic-geometry">Algebraic Geometry</a>
+        <a href="index.html?tag=number-theory">Number Theory</a>
+        <a href="index.html?tag=cryptography">Cryptography</a>
+      </p>
       <p>I&rsquo;ve been recently implementing some optimizations related to pairing calculations in elliptic curve cryptography. This note summarises some of my learning so far, and I hope it would be helpful for someone coming from a pure maths background who wants to learn about implementation and optimization details.</p>
       <h2>Elliptic Curve Pairing For Mathematicians</h2>
       <p>A pairing in cryptography is a bilinear map with certain computational properties that are very useful for cryptography applications. There are many applications for pairing-based cryptography and I will not go over them here. The Weil pairing was the first proposed pairing map, which is really the Poincar&eacute; duality for &Eacute;tale cohomology. In practice, cryptographers use other related variants (e.g. Tate pairing coming from Poitou-Tate duality) for performance reasons. For someone whose background was not in number theory, I found Silverman&rsquo;s <a href="https://cy2sec.comm.eng.osaka-u.ac.jp/miyaji-lab/event/pairing2010/program/SilvermanPairing.pdf">survey</a> to be a clear conceptual explanation of where the various pairings arise from.</p>

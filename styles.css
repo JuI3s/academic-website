@@ -222,8 +222,35 @@ abbr {
   padding: 0;
 }
 
-.blog-list li {
-  padding: 0.35rem 0;
+.blog-list li[hidden] {
+  display: none;
+}
+
+.tag-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.9rem;
+  margin: 0 0 1.25rem;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+}
+
+.tag-nav a.active {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+
+.post-tags {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  margin: -1.4rem 0 2rem;
+}
+
+.post-tags a + a::before {
+  content: " · ";
+  color: var(--text-muted);
+  border-bottom: none;
 }
 
 .blog-date {
