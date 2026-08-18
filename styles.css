@@ -370,24 +370,36 @@ footer {
 
 /* ===== Responsive ===== */
 
-@media (max-width: 640px) {
+@media (max-width: 800px) {
   .container {
     padding-top: 2.5rem;
   }
 
   .intro {
-    flex-direction: column-reverse;
-    gap: 1.75rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
   }
 
   .intro-side {
-    width: 100%;
+    order: -1;
+    width: calc(100% + 3rem);
+    max-width: none;
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
   }
 
   .portrait {
     width: 100%;
+    max-width: none;
     height: auto;
     aspect-ratio: 1 / 1;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .intro-email {
+    white-space: normal;
   }
 
   h1 {
