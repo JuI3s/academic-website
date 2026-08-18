@@ -81,10 +81,15 @@ a:hover {
   text-align: center;
 }
 
+.intro-address,
 .intro-email {
   margin: 0.6rem 0 0;
   font-family: var(--sans);
   font-size: 0.85rem;
+}
+
+.intro-email {
+  margin-top: 0.25rem;
   white-space: nowrap;
 }
 
