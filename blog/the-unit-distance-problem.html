@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The unit distance problem &mdash; Julius Zhang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]] } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body>
+  <main class="container">
+    <nav class="post-nav"><a href="index.html">&larr; Technical Blog</a></nav>
+    <article class="post">
+      <h1 class="post-title">The unit distance problem</h1>
+      <p class="post-date">23 May 2026</p>
+      <p>Recently, OpenAI announced an LLM-automated <a href="https://cdn.openai.com/pdf/74c24085-19b0-4534-9c90-465b8e29ad73/unit-distance-proof.pdf">proof</a> refuting the conjectured bound in the unit distance problem. This was a long-standing open problem in combinatorics, and the proof elegantly invokes constructions via infinite class field towers, exploiting rigid structures from algebraic integers related to their canonical embeddings. There is also a companion <a href="https://cdn.openai.com/pdf/74c24085-19b0-4534-9c90-465b8e29ad73/unit-distance-proof.pdf">paper</a>, written by mathematicians, that explains the technical details as well as commenting on, among other things, the implications for the mathematical community and several sources in existing literature that clearly influence the proof strategy, which are not included in the LLM-automated proof paper. In this post, I&rsquo;m going to walk through the main construction ideas.</p>
+      <p>In a previous post, I talked about how one uses convex geometry to constrain algebraic structures to recover classical results, such as the class number formula, and hinted at connections to cryptography. This turns out to be timely given the specific arguments. Hopefully, the results should provoke more interest among cryptographers and coding theorists. There is a long debate on whether claimed security levels for common lattice-based cryptosystems &mdash; built up from the rings of integers of cyclotomic extensions &mdash; hold up. In practice, people pretend that no exploitable algebraic structures exist. We won&rsquo;t address the issue in this post, but the unit distance problem proof suggests previously unnoticed structures from algebraic lattices. And the probabilistic argument that sufficiently many field elements (of a certain type) with norm one exist is particularly interesting.</p>
+      <p>As a topologist and geometer, I find the Golod&ndash;Shafarevich theory part the most intriguing, which involves algebraic topology flavours. But I will present the relevant arguments mostly in a black-box way. I will save stuff like this and connections between Cohen&ndash;Lenstra heuristics over function fields and homological stability for future posts.</p>
+      <hr />
+      <h2>High-level proof strategy</h2>
+      <p>The unit distance problem asks the following question: given a finite set \(P \subset \mathbb{R}^2\), equipped with the standard Euclidean metric, let \(v(P)\) be the number of unordered pairs with pairwise distance 1. Define \(v(n) = \max_{P \subset \mathbb{R}^2,\, |P|=n} v(P)\). The unit distance problem asks how \(v(n)\) grows as \(n \to \infty\). Specifically, Erd&#337;s conjectured that there exists a constant \(C &gt; 0\) such that the following inequality holds:</p>
+      \[ v(n) \leq n^{1 + C/\log\log n} \]
+      <p>which turned out to be false. The proof requires constructing a series of planar sets, whose cardinality tends to infinity, such that the numbers of unordered pairs with pairwise distance 1 remain sufficiently large.</p>
+      <hr />
+      <h2>Construction</h2>
+      <p>The construction goes through embedding number fields into the Euclidean space \(\mathbb{R}^n\) via the canonical embedding. For instance, if one takes a cyclotomic extension \(\mathbb{Q}(\zeta_n)\) that is not totally real &mdash; meaning that one cannot embed it into the real numbers, e.g. the field \(\mathbb{Q}(i)\) &mdash; then each coordinate of the canonical embedding corresponds to mapping the generator into an \(n\)-th primitive root of unity on the unit circle. We notice that we can reformulate the problem this way: instead of constructing planar sets \(P\), we construct subsets of a number field, with only complex embeddings, such that there exist many unordered pairs where each coordinate of the pairwise distance has absolute value 1. This works because projection to the first complex coordinate is injective, so we can construct planar sets with many unordered pairs with pairwise distance 1.</p>
+      <p>Specifically, the construction follows three steps:</p>
+      <ol>
+        <li>Construct a number field \(K\) as the quadratic extension \(K/L\) of a totally real field \(L\) adjoined by a root of \(-1\), so in particular \(K\) has only complex embeddings.</li>
+        <li>Construct a sufficiently large subset \(U\) of \(K\), such that each coordinate of an element in the canonical embedding of \(U\) has absolute value 1.</li>
+        <li>Construct a set \(X\), such that sufficiently many elements in \(X\) have pairwise distances in the set \(U\).</li>
+      </ol>
+      <p>For technical details, see the OpenAI technical paper. Here, we briefly mention the constructions of \(U\) and \(X\) in the last two steps, whose existence involves non-constructive arguments.</p>
+      <hr />
+      <h3>Construction of \(U\)</h3>
+      <p>For the construction of \(U\), the key idea is that one can construct the set \(U\) as a subset of elements with relative norm 1 from \(K\) to \(L\). These elements, when viewed as vectors in the Euclidean space, are a subset of vectors with norm 1. Moreover, one constructs elements in \(U\) as normalised generators of principal fractional ideals with prescribed orders at Archimedean places from a set of primes totally split in \(K\). One shows that \(U\) contains sufficiently many elements using Minkowski&rsquo;s bound, which will come in handy for the asymptotic bound argument.</p>
+      <h3>Construction of \(X\)</h3>
+      <p>The proof constructs \(X\) as the translate \(\Lambda - a\) of the lattice \(\Lambda\) of \(D^{-1}\mathcal{O}_K\) &mdash; the ring of integers of \(K\) divided by a bounded denominator &mdash; by an element \(a\) in the fundamental domain of \(\Lambda\). This way, one obtains a lower bound on the ratio of the number of pairs of elements in \(X\) whose differences lie in \(U\) against the cardinality of \(X\), which follows from a standard probabilistic pigeonhole argument via standard unfolding identity formulas relating counting formulas to the lattice covolume.</p>
+      <hr />
+      <h2>Infinite class field towers</h2>
+      <p>The most technically interesting part of the proof relates to the construction of the totally real field \(L\) in step 1. The basic idea is that one considers an extension of number fields with Galois group a direct sum of copies of \(\mathbb{Z}/3\mathbb{Z}\) and then takes its everywhere-unramified pro-3 extension. Then, one can cut out a specific subextension satisfying all compatible conditions, such as making sure all relevant primes split completely, while feeding various controls into Golod&ndash;Shafarevich theory to show that the field tower is infinite, where the extension at each level provides constructions for step 1.</p>
+    </article>
+  </main>
+</body>
+</html>

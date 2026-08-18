@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>S-unit, log embedding, and the class number formula &mdash; Julius Zhang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]] } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body>
+  <main class="container">
+    <nav class="post-nav"><a href="index.html">&larr; Technical Blog</a></nav>
+    <article class="post">
+      <h1 class="post-title">S-unit, log embedding, and the class number formula</h1>
+      <p class="post-date">1 May 2026</p>
+      <p>I&rsquo;ve been working on lattice-based cryptography projects for a while. Before that, I spent some time working on stuff related to computing group cohomology related to \({S}\)-units, which also show up in attacks on lattice-based crypto systems. In this post, I&rsquo;m going to talk about \({S}\)-units and how to use convex geometry to recover structures about them (Dirichlet&rsquo;s unit theorem generalized to \({S}\)-units). This post is aimed at readers with some working knowledge of undergraduate algebraic number theory (e.g. have heard of a Dedekind domain and its elementary properties, such as prime factorization).</p>
+      <p>One payoff of this approach is that one obtains the class number formula, which relates the analytic zeta function to various algebraic quantities.</p>
+      <p>\[\lim_{s \to 1} (s-1) \zeta_K(s) = \frac{2^{r_1} (2\pi)^{r_2} h_K R_K}{w_K \sqrt{|d_K|}},\]</p>
+      <ul>
+        <li>\(h_K\) &mdash; class number of \(K\)</li>
+        <li>\(d_K\) &mdash; discriminant of \(K\)</li>
+        <li>\(R_K\) &mdash; regulator of \(K\)</li>
+        <li>\(w_K\) &mdash; number of roots of unity in \(K\)</li>
+        <li>\(r_1\) &mdash; number of real embeddings</li>
+        <li>\(r_2\) &mdash; number of conjugate pairs of complex embeddings</li>
+        <li>\(\zeta_K(s)\) &mdash; Dedekind zeta function of \(K\)</li>
+      </ul>
+      <p>I like \({S}\)-units a lot. Beyond number theory, they show up in algebraic K-theory and algebraic geometry, and they relate to some of the most profound and mysterious stuff in mathematics, such as the higher regulators and the Birch-Swinnerton-Dyer conjecture. Good material for a future post.</p>
+      <h2>Lattice and convex geometry</h2>
+      <p>Many people&rsquo;s mental picture of a lattice is a stack of molecules stacked together. This presumes an external reference frame. To a number theorist, a lattice is a more inherent object. Take a number field \({K}\), which is a finite extension of \({\mathbb{Q}}\) the field of rational numbers, its ring of integers \({\mathcal{O}_K}\) consists of elements \({x \in K}\) such that the minimal polynomial of \({x}\) over \({\mathbb{Q}}\) is integral. This generalizes \({\mathbb{Z}}\) the subset of integers in \({\mathbb{Q}}\). For example, take \({K = \mathbb{Q}(i)}\), its ring of integers is \({\mathcal{O}_K = \mathbb{Z}[i]}\), the ring of Gaussian integers. More generally, the ring of integers \({\mathcal{O}_K}\) is a \({\mathbb{Z}}\)-module that spans \({K}\) as a vector space over \({\mathbb{Q}}\), hence the name &ldquo;lattice&rdquo;.</p>
+      <p>Number theorists are interested in generalizations of these objects, as they encode arithmetic information, for example actions from the Galois group and torsion elements, which often stays invisible in the &ldquo;geometry&rdquo;, which involves thinking about algebraic objects as some kind of spaces familiar to most people&rsquo;s geometric intuition.</p>
+      <p>However, real geometry does play pivotal roles in understanding number theory, which is a bit uncanny in retrospect. One can embed a number field into a real vector space through the &ldquo;canonical embedding&rdquo;. For example, one can picture \({\mathbb{Q}(i)}\) as a subset of the complex plane in the usual sense, where \({i}\) corresponds to the point \({(0, 1)}\) in the \({(x, y)}\)-plane. This respects the relation \({i^2 = -1}\), where recall that multiplication of complex numbers amounts to doing a rotation and scaling. More generally, one can embed cyclotomic extensions similarly where a generator is mapped to a root of unity on the unit circle. By induction using the primitive element theorem, one can embed any number field into a real vector space, in a way that is compatible with addition and multiplication.</p>
+      <p>One might wonder why to bother with the canonical embedding. The answer is that \({\mathbb{R}}\) and \({\mathbb{C}}\) have useful properties invisible at the algebraic level. For example, they come equipped with the standard Euclidean norms, which allows one to define the canonical embedding norm on a number field. More interestingly still, convex geometry constrains arithmetic structures. This is perhaps best motivated by Dirichlet&rsquo;s unit theorem.</p>
+      <p>Before stating the theorem, we recall that an Archimedean place is an embedding of the number field \({K}\) into \({\mathbb{R}}\) or \({\mathbb{C}}\). It is called a real place if the target is \({\mathbb{R}}\) and a complex place otherwise. Due to the conjugate action, the complex places come in pairs, so we write \({r_1}\) for the number of real places and \({2r_2}\) for the number of complex places. Dirichlet&rsquo;s unit theorem states that the group of units \({\mathcal{O}_K^\times}\) is generated by \({r_1 + r_2 - 1}\) independent elements up to roots of unity, specifically \({\mathcal{O}_K^{\times} \cong \mathbb{Z}^{r_1 + r_2 - 1} \times \mu_K}\), where \({\mu_K}\) denotes the group of roots of unity in \({K}\).</p>
+      <p>This statement looks purely algebraic, but is actually a convex geometry statement in disguise. The standard proof follows by constructing a logarithmic embedding \({L: \mathcal{O}_K^\times \to \mathbb{R}^{r_1 + r_2}}\), where</p>
+      <p id="eqlog-embedding-units">\[L(\alpha) = \bigl(\log|\sigma_1(\alpha)|, \ldots, \log|\sigma_{r_1}(\alpha)|, \; 2\log|\sigma_{r_1 + 1}(\alpha)|, \ldots, \; 2\log|\sigma_{r_1 + r_2}(\alpha)|\bigr),\]</p>
+      <p>where \({\sigma_1, \ldots, \sigma_{r_1}}\) are the real places and \({\sigma_{r_1 + 1}, \ldots, \sigma_{r_1 + r_2}}\) the complex places of \({K}\). The key geometric observation is that the coordinates of \({L(\alpha)}\) sum to \({0}\) (equivalently, \({\log\lvert N_{K/\mathbb{Q}}(\alpha)\rvert = 0}\)), so \({L(\mathcal{O}_K^\times)}\) lies in the hyperplane of dimension \({r_1 + r_2 - 1}\) cut out by this relation. The image \({L(\mathcal{O}_K^\times)}\) is a discrete subgroup of that hyperplane; we write \({T}\) for the compact quotient of the hyperplane by \({L(\mathcal{O}_K^\times)}\). Using Minkowski&rsquo;s convex body theorem, which states that a sufficiently large symmetric convex body contains an integral point, one can construct a surjective group homomorphism from a compact space to \({T}\). Therefore, by a purely topological argument, one shows that \({T}\) is compact, hence \({L(\mathcal{O}_K^\times)}\) must have full rank in the hyperplane! With more work and looking at the kernel of this map carefully, one recovers Dirichlet&rsquo;s unit theorem.</p>
+      <h2>S-units</h2>
+      <p>The ring of integers \({\mathcal{O}_K}\) is a Dedekind domain, so every nonzero fractional ideal factors uniquely into prime ideals. For \({x \in K^\times}\), write \({(x) = \prod_{i} \mathfrak{p}_i^{e_i}}\) for the prime factorization of the principal fractional ideal \({(x)}\); for a prime ideal \({\mathfrak{q}}\), the valuation \({v_{\mathfrak{q}}(x)}\) is the exponent of \({\mathfrak{q}}\) in this product.</p>
+      <p>Fix a finite set \({S}\) of nonzero prime ideals of \({\mathcal{O}_K}\). The ring of \({S}\)-integers \({\mathcal{O}_{K,S}}\) consists of those \({x \in K}\) such that \({v_{\mathfrak{p}}(x) \geq 0}\) for every nonzero prime ideal \({\mathfrak{p} \notin S}\). Its unit group \({\mathcal{O}_{K,S}^{\times}}\) is the group of \({S}\)-units: those \({\alpha \in K^\times}\) such that \({v_{\mathfrak{p}}(\alpha) = 0}\) for all \({\mathfrak{p} \notin S}\). Equivalently, only primes in \({S}\) may appear in the factorization of \({(\alpha)}\).</p>
+      <p>Listing the primes in \({S}\) as \({\mathfrak{p}_1, \ldots, \mathfrak{p}_{\lvert S\rvert}}\), one defines a logarithmic embedding \({L: \mathcal{O}_{K,S}^{\times} \to \mathbb{R}^{r_1 + r_2 + \lvert S\rvert}}\) by the same Archimedean coordinates as in <a href="#eqlog-embedding-units">(1)</a>, together with the finite coordinates \({v_{\mathfrak{p}_j}(\alpha) \log N\mathfrak{p}_j}\):</p>
+      <p>\[L(\alpha) = \bigl(\log\lvert\sigma_1(\alpha)\rvert, \ldots, \log\lvert\sigma_{r_1}(\alpha)\rvert \ldots 2\log\lvert\sigma_{r_1+1}(\alpha)\rvert, \ldots, 2\log\lvert\sigma_{r_1+r_2}(\alpha)\rvert, \ldots v_{\mathfrak{p}_1}(\alpha)\log N\mathfrak{p}_1, \ldots, v_{\mathfrak{p}_{\lvert S\rvert}}(\alpha)\log N\mathfrak{p}_{\lvert S\rvert}\bigr).\]</p>
+      <p>where \({N\mathfrak{p}_i = \lvert\mathcal{O}_K/\mathfrak{p}_i\rvert}\) is the ideal norm of \({\mathfrak{p}_i}\). By the product formula, the coordinates of \({L(\alpha)}\) sum to \({0}\), so the image lies in a hyperplane of dimension \({r_1 + r_2 + \lvert S\rvert - 1}\). The same convex-geometry arguments as for Dirichlet&rsquo;s unit theorem show that \({L(\mathcal{O}_{K,S}^{\times})}\) is a full-rank lattice in this hyperplane.</p>
+      <h2>The analytic class number formula</h2>
+      <p>To finish this post, let me just say that by studying the logarithmic embedding and its kernel closely, knowing the number of lattice points in a large Lipschitz-bounded set is controlled explicitly, one can derive the analytic class number formula, which packages lots of algebraic number theory information of number fields into the associated Dedekind zeta function. Once you have the geometric picture, this follows from exercises in computing integrals.</p>
+    </article>
+  </main>
+</body>
+</html>

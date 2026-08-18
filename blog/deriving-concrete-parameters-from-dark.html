@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deriving concrete parameters from DARK &mdash; Julius Zhang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]] } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body>
+  <main class="container">
+    <nav class="post-nav"><a href="index.html">&larr; Technical Blog</a></nav>
+    <article class="post">
+      <h1 class="post-title">Deriving concrete parameters from DARK</h1>
+      <p class="post-date">12 June 2026</p>
+      <p>For a recent project, I had to derive concrete parameters from the follow-up paper (B&uuml;nz and Fisch 2023) on the DARK polynomial commitment scheme. I wrote up the methodology notes in this post in case this is helpful to others.</p>
+      <h2>Overview</h2>
+      <p>The idea for the binding proof in DARK is simple from the following steps (for more, see Corollary 5):</p>
+      <ol>
+        <li>For a multi-linear polynomial with bounded coefficients, evaluating at a fixed sufficiently large positive integer is injective. (Fact 1)</li>
+        <li>Commitment in DARK is basically evaluating rational polynomials with rational coefficients at a large point.</li>
+        <li>Combined with Fact 1, breaking binding amounts to breaking the hidden order assumption. This is formalized in Lemma 7.</li>
+      </ol>
+      <p>As in the paper, we use \(W(\beta_n, \beta_d)\) to denote the set of vectors, which we can identify with their corresponding multi-linear polynomials, with the \(\ell_2\)-norm of the numerator vector bounded by \(\beta_n\) and the \(\ell_{\infty}\)-norm of the denominators bounded by \(\beta_d\).<sup><a href="#fn1" id="fnref1">1</a></sup> Notice that we talk about the numerators and denominators informally, but this doesn&rsquo;t matter for the proof, as the upper bound on the absolute value is achieved trivially if one reduces the denominator and numerator by their common factors. Similarly, we use \(W(\beta)\) to denote the set of integer multi-linear polynomials.</p>
+      <p>DARK shows that we can parameterize \(\beta_n\) and \(\beta_d\) to construct an upper bound \(\beta\), such that the DARK protocol is binding for rational multi-linear polynomials in \(W(\beta_n, \beta_d)\) and integer multi-linear polynomials in \(W(\beta)\). This is the content of Corollary 5.</p>
+      <h2>Parameterization</h2>
+      <p>We have the following parameterization:
+
+\[\begin{aligned} \beta_n &amp;= 2^{\lambda\mu}\sqrt{\xi}\,\beta,\\ \beta_d &amp;= \frac{\sqrt{\xi}}{2^{\lambda\mu}}, \end{aligned}\]
+
+where \(\mu = \log n\) is the number of interactive rounds in the DARK protocol, \(\lambda\) is the security bit parameter, and the parameter \(\xi\) is given by</p>
+      <p>\[\xi = 2^{(16+2\mu)\lambda+6\mathrm{CSZ}_{\mu,\lambda}+2\mu+6}.\]</p>
+      <p>The above is the parameterization used in the first paragraph of section 7.1, page 23. To make it more confusingly still, in Theorem 5 on page 25, \(\xi\) is parameterized by \(\log \xi = (14+2\mu)\lambda+6\text{CSZ}_{\mu,\lambda}+2(\mu+4)\), where the constant term is 8 instead of 6 and one factor of the \(\lambda\) term differs (16 vs 14). The value \(\text{CSZ}_{\mu,\lambda}\) is the associated bound in the composite Schwartz-Zippel lemma. In Theorem 5 on page 25, a looser analytic bound is used, but a footnote in the paper suggests that the values can be replaced with concrete values produced in Table 1 from Theorem 3.</p>
+      <h2>Instantiation</h2>
+      <p>We reproduced the computation of \(\mathrm{CSZ}\) and compare with the values in the paper for parameters \(\mu = 32\) and \(\lambda = 50\). We can compute the value of \(\mathrm{CSZ}\) to derive<sup><a href="#fn2" id="fnref2">2</a></sup></p>
+      <p>\[\begin{aligned} \log \beta_d &amp;= 1422,\\ \log \beta_n &amp;= 4622 + \log \beta. \end{aligned}\]</p>
+      <p>For the DARK protocol, we work with \(q = \lceil 2\sqrt{n}\beta \rceil\) as in Corollary 5 on page 22, so in particular \(\log q = 17 + \log \beta\) for \(\mu = 32\). The binding soundness bound is given by \(\frac{3\mu}{2^{\lambda}}\), which is given in the almost-special-soundness expression in the paragraph immediately following Theorem 5 on page 25. This gives about \(2^{-43.42}\) for \(\mu = 32\) and \(\lambda = 50\). We include the table showing computations for \(\mathrm{CSZ}\). We additionally highlight the value corresponding to 32 rounds in the interactive proof protocol at security level 50-bit.</p>
+      <table>
+        <caption>Upper bounds on \(\mathrm{CSZ}\). Italicized entries match published values (DARK, Table 1). The bold entry is the \(\mu=32\), \(\lambda=50\) instantiation.</caption>
+        <thead>
+          <tr>
+            <th>Rows: \(\mu\)</th>
+            <th colspan="7">Columns: \(\lambda\)</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th>40</th>
+            <th>50</th>
+            <th>80</th>
+            <th>100</th>
+            <th>120</th>
+            <th>128</th>
+            <th>240</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">1</th><td>40</td><td>50</td><td>80</td><td>100</td><td>120</td><td>128</td><td>240</td></tr>
+          <tr><th scope="row">10</th><td>133</td><td>151</td><td>211</td><td>252</td><td>289</td><td>308</td><td>500</td></tr>
+          <tr><th scope="row">16</th><td>178</td><td>205</td><td>276</td><td>323</td><td>366</td><td>387</td><td>616</td></tr>
+          <tr><th scope="row">20</th><td>207</td><td>238</td><td>318</td><td>368</td><td>416</td><td>432</td><td>679</td></tr>
+          <tr><th scope="row">25</th><td>241</td><td>277</td><td>367</td><td>420</td><td>472</td><td>494</td><td>758</td></tr>
+          <tr><th scope="row">30</th><td>278</td><td>314</td><td>409</td><td>469</td><td>527</td><td>551</td><td>831</td></tr>
+          <tr><th scope="row">32</th><td>295</td><td><strong>329</strong></td><td>432</td><td>494</td><td>546</td><td>570</td><td>864</td></tr>
+          <tr><th scope="row">40</th><td>350</td><td>393</td><td>500</td><td>566</td><td>630</td><td>656</td><td>976</td></tr>
+          <tr><th scope="row">50</th><td>419</td><td>462</td><td>585</td><td>662</td><td>736</td><td>763</td><td>1105</td></tr>
+        </tbody>
+      </table>
+      <p>The code below was used to produce the table.</p>
+      <pre><code>import heapq
+import math
+from mpmath import mp, betainc, log, mpf
+from sympy import nextprime
+
+mp.dps = 40
+
+def log2_I(p: int, r: int, mu: int):
+    """log2 of I_{1/p}(r, mu); convention I(0, mu) = 1."""
+    if r == 0:
+        return mpf(0)
+    return log(betainc(r, mu, 0, mpf(1) / p, regularized=True), 2)
+
+def t_upper(mu: int, lam: int) -&gt; int:
+    """ceil of the greedy upper bound on log2 t(lambda, mu) -- Algorithm 1."""
+    def item(p, r):
+        w = log2_I(p, r - 1, mu) - log2_I(p, r, mu)
+        return (-log(p, 2) / w, p, r, w)          # max-heap by density
+    heap = [item(2, 1)]
+    pmax = 2
+    total_w, total_v = mpf(0), mpf(0)
+    while total_w &lt; lam:
+        _, p, r, w = heapq.heappop(heap)
+        total_v += log(p, 2)
+        total_w += w
+        heapq.heappush(heap, item(p, r + 1))
+        if p == pmax:
+            pmax = nextprime(p)
+            heapq.heappush(heap, item(pmax, 1))
+    return math.ceil(total_v)</code></pre>
+      <p>B&uuml;nz, Benedikt, and Ben Fisch. 2023. &ldquo;Multilinear Schwartz-Zippel Mod N and Lattice-Based Succinct Arguments.&rdquo; In Theory of Cryptography &ndash; TCC 2023, Part III, edited by Guy N. Rothblum and Hoeteck Wee, vol. 14371. Lecture Notes in Computer Science. Springer. <a href="https://doi.org/10.1007/978-3-031-48621-0_14">https://doi.org/10.1007/978-3-031-48621-0_14</a>.</p>
+      <div class="footnotes">
+        <ol>
+          <li id="fn1">Very confusingly, the appearance of \(W(\beta_n, \beta_d)\) suppresses the \(\ell_2\)-norm, making it easy to believe that the norm is the \(\ell_{\infty}\)-norm. <a href="#fnref1">&#8617;&#65038;</a></li>
+          <li id="fn2">Recall the discrepancy in the paper&rsquo;s presentation of \(\xi\). For the concrete instantiation here, we compute using \(\log \xi = (16+2\mu)\lambda + 6\,\mathrm{CSZ}_{\mu,\lambda} + 2\mu + 6\). <a href="#fnref2">&#8617;&#65038;</a></li>
+        </ol>
+      </div>
+    </article>
+  </main>
+</body>
+</html>

@@ -1,0 +1,395 @@
+/* =====================================================
+   Academic personal site — clean serif/sans hybrid
+   ===================================================== */
+
+:root {
+  --bg: #fdfdfc;
+  --text: #1f2328;
+  --text-muted: #59616b;
+  --accent: #1d4e79;
+  --accent-soft: #e9f0f6;
+  --rule: #e4e4e1;
+  --link: #1d4e79;
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #16181b;
+    --text: #e8e6e3;
+    --text-muted: #9aa2ad;
+    --accent: #7ca6cc;
+    --accent-soft: #1c2836;
+    --rule: #2a2e35;
+    --link: #8db3d6;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: 1.125rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 2rem;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 120ms ease;
+}
+
+a:hover {
+  border-bottom-color: var(--link);
+}
+
+/* ===== Intro ===== */
+
+.intro {
+  display: flex;
+  gap: 2.5rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+}
+
+.intro-text {
+  flex: 1;
+}
+
+.intro-side {
+  flex-shrink: 0;
+  width: 220px;
+  text-align: center;
+}
+
+.intro-email {
+  margin: 0.6rem 0 0;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.intro-links {
+  margin: 0.25rem 0 0;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+}
+
+h1 {
+  font-size: 2.6rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.35rem;
+}
+
+.tagline {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 1.1rem;
+}
+
+.bio {
+  margin: 0 0 0.7rem;
+  line-height: 1.55;
+}
+
+.bio:last-child {
+  margin-bottom: 0;
+}
+
+.portrait {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== Sections ===== */
+
+section {
+  margin-bottom: 3rem;
+}
+
+h2 {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.6rem;
+  margin: 0 0 1.5rem;
+}
+
+/* ===== Publications ===== */
+
+.pub-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pub {
+  padding: 0;
+  margin-bottom: 1.1rem;
+  line-height: 1.45;
+}
+
+.pub:last-child {
+  margin-bottom: 0;
+}
+
+.pub-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.pub-authors {
+  color: var(--text-muted);
+  font-size: 1.02rem;
+}
+
+.pub-authors .me {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.pub-venue {
+  font-style: italic;
+  font-size: 1.02rem;
+  color: var(--text-muted);
+}
+
+.pub-links {
+  margin-top: 0.1rem;
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.pub-links a {
+  margin-right: 0.75rem;
+  color: var(--link);
+}
+
+abbr {
+  text-decoration: none;
+}
+
+/* ===== Blog ===== */
+
+.blog-desc {
+  margin: 0 0 1.25rem;
+  color: var(--text-muted);
+}
+
+.blog-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.blog-list li {
+  padding: 0.35rem 0;
+}
+
+.blog-date {
+  display: inline-block;
+  min-width: 6.5rem;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* ===== Blog post pages ===== */
+
+.post-nav {
+  margin-bottom: 2.5rem;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+}
+
+.post .post-title {
+  font-size: 2rem;
+  margin-bottom: 0.3rem;
+}
+
+.post .post-date {
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0 0 2rem;
+}
+
+.post h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  font-family: var(--serif);
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--text);
+  border-bottom: none;
+  padding-bottom: 0;
+  margin: 2rem 0 0.75rem;
+}
+
+.post pre {
+  background: var(--accent-soft);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 1rem;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.post code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+}
+
+.post table {
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.95rem;
+}
+
+.post th,
+.post td {
+  border: 1px solid var(--rule);
+  padding: 0.35rem 0.7rem;
+  text-align: right;
+}
+
+.post th {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.post blockquote {
+  margin: 1.25rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid var(--rule);
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.post .footnotes {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+/* ===== Talks ===== */
+
+.talks-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.talks-list li {
+  margin-bottom: 0.8rem;
+  line-height: 1.45;
+}
+
+.talks-list li:last-child {
+  margin-bottom: 0;
+}
+
+.talk-title {
+  display: block;
+  font-weight: 600;
+}
+
+.talk-venue {
+  display: block;
+  color: var(--text-muted);
+}
+
+/* ===== Teaching ===== */
+
+.teaching-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.teaching-list li {
+  padding: 0.55rem 0;
+  border-bottom: 1px dashed var(--rule);
+}
+
+.teaching-list li:last-child {
+  border-bottom: none;
+}
+
+.role {
+  font-weight: 600;
+}
+
+/* ===== Footer ===== */
+
+footer {
+  margin-top: 4rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 640px) {
+  .container {
+    padding-top: 2.5rem;
+  }
+
+  .intro {
+    flex-direction: column-reverse;
+    gap: 1.75rem;
+  }
+
+  .portrait {
+    width: 150px;
+    height: 150px;
+  }
+
+  .intro-side {
+    width: auto;
+  }
+
+  h1 {
+    font-size: 2.1rem;
+  }
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Julius Zhang</title>
+  <meta name="description" content="Julius Zhang — Computer Science researcher working on systems, security, and verifiable computation." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+
+    <!--
+      Page layout only — the actual content lives in the content/ folder.
+      Edit content/intro.html, content/publications.html, content/teaching.html.
+      To add a section: create content/<name>.html and add a line here.
+    -->
+    <div data-include="content/intro.html"></div>
+    <div data-include="content/publications.html"></div>
+    <div data-include="content/talks.html"></div>
+    <div data-include="content/notes.html"></div>
+    <div data-include="content/teaching.html"></div>
+
+    <footer>
+      <p>&copy; 2026 Julius Zhang &middot; Last updated August 2026</p>
+    </footer>
+
+  </main>
+
+  <script>
+    // Inline each content/ partial into its placeholder div.
+    document.querySelectorAll("[data-include]").forEach(async (el) => {
+      const res = await fetch(el.dataset.include);
+      el.outerHTML = await res.text();
+    });
+  </script>
+</body>
+</html>

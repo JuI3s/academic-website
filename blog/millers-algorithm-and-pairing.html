@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Miller&rsquo;s algorithm and pairing &mdash; Julius Zhang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]] } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body>
+  <main class="container">
+    <nav class="post-nav"><a href="index.html">&larr; Technical Blog</a></nav>
+    <article class="post">
+      <h1 class="post-title">Miller&rsquo;s algorithm and pairing</h1>
+      <p class="post-date">10 October 2025</p>
+      <p>I&rsquo;ve been recently implementing some optimizations related to pairing calculations in elliptic curve cryptography. This note summarises some of my learning so far, and I hope it would be helpful for someone coming from a pure maths background who wants to learn about implementation and optimization details.</p>
+      <h2>Elliptic Curve Pairing For Mathematicians</h2>
+      <p>A pairing in cryptography is a bilinear map with certain computational properties that are very useful for cryptography applications. There are many applications for pairing-based cryptography and I will not go over them here. The Weil pairing was the first proposed pairing map, which is really the Poincar&eacute; duality for &Eacute;tale cohomology. In practice, cryptographers use other related variants (e.g. Tate pairing coming from Poitou-Tate duality) for performance reasons. For someone whose background was not in number theory, I found Silverman&rsquo;s <a href="https://cy2sec.comm.eng.osaka-u.ac.jp/miyaji-lab/event/pairing2010/program/SilvermanPairing.pdf">survey</a> to be a clear conceptual explanation of where the various pairings arise from.</p>
+      <p>For an elliptic curve (a smooth, projective algebraic curve of genus 1 with a marked point \({\mathcal{O}}\)), its rational points are in bijection with the degree zero part of its Picard group. One proof of this fact is based on a dimensionality argument using Riemann-Roch. Concretely, this map sends a point \({\mathcal{P}}\) to the line bundle represented by the divisor \({(\mathcal{P}) - (\mathcal{O})}\). Tensor product of line bundles in the Picard group induces a multiplication map on the rational points, which recovers the classical group law.</p>
+      <h2>Miller&rsquo;s Algorithm</h2>
+      <p>In practice, computing pairings on elliptic curves in some presentation can be challenging although it&rsquo;s conceptually clear (to algebraic geometers) that they define a bilinear map. The original paper of <a href="https://crypto.stanford.edu/miller/">Miller</a> considers the problem of computing a rational function on an algebraic curve that corresponds to a given divisor (in the sense that the given divisor is equivalent to some effective divisor given that function). For an elliptic curve, this basically boils down to the identity</p>
+      \[ (div(h_{\mathcal{P}, \mathcal{Q}})) = (\mathcal{P}) + (\mathcal{Q}) - (\mathcal{P} + \mathcal{Q}) - (\mathcal{O}), \ \ \ \ \ (1) \]
+      <p>where \({h_{\mathcal{P}, \mathcal{Q}}}\) is the function of the line passing through \({\mathcal{P}}\) and \({\mathcal{Q}}\), where \({h_{\mathcal{P}, \mathcal{Q}}}\) is a rational function representing the ratio of two lines that we will define later. Equation (1) follows straightforwardly from the following two identities corresponding to divisors that represent the line passing through \({\mathcal{P}}\) and \({\mathcal{Q}}\) and the vertical line at \({x}\)-coordinate \({\mathcal{P}+\mathcal{Q}}\).</p>
+      \[ (y - \lambda x - v) = (\mathcal{P}) + (\mathcal{Q}) + (-\mathcal{P} - \mathcal{Q}) - 3(\mathcal{O}), \ \ \ \ \ (2) \]
+      \[ (x - x_{\mathcal{P}+\mathcal{Q}}) = (\mathcal{P} + \mathcal{Q}) - (\mathcal{P} + \mathcal{Q}) - 2(\mathcal{O}). \ \ \ \ \ (3) \]
+      <p>We then set \({h_{\mathcal{P}, \mathcal{Q}} = \frac{y - \lambda x - v}{x - x_{\mathcal{P}+\mathcal{Q}}}}\) to recover the desired identity. Miller&rsquo;s algorithm (as described below) then uses (1) at each step to compute the rational function whose divisor corresponds to \({N(\mathcal{P}) - (N(\mathcal{P})) - (N-1)(\mathcal{O})}\) for an \({N}\)-torsion point \({\mathcal{P}}\), where the proof essentially follows from a telescoping sum argument.</p>
+      <pre><code>Set T = P and f = 1
+Loop i = t - 1 down to 0
+  Set f = f^2 * h_{T,T}
+  Set T = 2T
+  If epsilon_i = 1
+    Set f = f * h_{T,P}
+    Set T = T + P
+  End If
+End i Loop
+Return the value f</code></pre>
+      <p>(This section follows the presentation in Silverman&rsquo;s book on the arithmetic of elliptic curves.)</p>
+      <h2>Optimization</h2>
+      <p>There are many techniques to speed up pairing calculations; I&rsquo;ll probably address them in a later post. The <a href="https://eprint.iacr.org/2017/1108.pdf">notes</a> gives a detailed discussion on the optimization details of pairing calculations. One particular optimization related to computing the Miller loop is that one can drop the denominator of the line function (so-called &ldquo;<a href="https://link.springer.com/article/10.1007/s00145-004-0311-z">denomination elimination</a>&rdquo; technique).</p>
+    </article>
+  </main>
+</body>
+</html>

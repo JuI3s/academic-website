@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Consensus is a sheaf condition &mdash; Julius Zhang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]] } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body>
+  <main class="container">
+    <nav class="post-nav"><a href="index.html">&larr; Technical Blog</a></nav>
+    <article class="post">
+      <h1 class="post-title">Consensus is a sheaf condition</h1>
+      <p class="post-date">13 June 2026</p>
+
+      <p>Algebraic geometry and distributed systems were two of my favourite subjects when I was an undergrad. These two worlds don&rsquo;t usually overlap. But they do share the &ldquo;same&rdquo; mathematical structures. I realized this when I was TAing for the distributed systems class at Stanford and finally decided to write it down. The upshot is that ensuring consistency in a consensus protocol amounts to checking a local-to-global principle, which underlies modern algebraic geometry. At the end, I&rsquo;ll discuss some wishful thinking that might be pertinent to the correctness verification and performance optimization of distributed protocols.</p>
+
+      <p>The idea is rather simple once one internalizes the local-to-global principle and recognizes the familiar quorum system in distributed computing as one instance of it. Unfortunately, discussing these ideas formally requires quite a lot of set-up. Readers comfortable with the background can go straight to the punchline in the last section on distributed computing, where I make this observation explicit.</p>
+
+      <p>I hope the mathematically sophisticated readers won&rsquo;t take offense at the &ldquo;abstract nonsense&rdquo; that I&rsquo;m about to unleash, and that the system folks will pardon me for writing with strange symbols like \(\mathcal{F}_x\).</p>
+
+      <hr />
+      <ol>
+        <li>Background</li>
+        <li>Local-to-global</li>
+        <li>Category theory</li>
+        <li>Presheaf and sheaf
+          <ol>
+            <li>Stalks</li>
+          </ol>
+        </li>
+        <li>Distributed systems
+          <ol>
+            <li>Consensus</li>
+            <li>Practical relevance?</li>
+          </ol>
+        </li>
+      </ol>
+      <hr />
+
+      <h2>Background</h2>
+
+      <p>In distributed computing, a famous problem is how to achieve consensus, i.e. how to make nodes in a distributed system agree on a single thing despite all the network failures, hardware failures, and possibly malicious nodes themselves. The consensus problem has an (in)famous history due to the first solution (in the partition fault tolerance sense) from Leslie Lamport, who presented the solution in the Paxos paper about an ancient civilization in the Mediterranean Sea and gave talks on it dressed up as Indiana Jones&hellip; It took Microsoft a while to figure out its researcher solved a billion dollar problem that plagues their systems, after several ad hoc (i.e. broken, incorrect) engineering attempts.</p>
+
+      <p>Algebraic geometry is equally confusing to most folks. One might think of algebraic geometry as the study of polynomial systems in somewhat geometric ways, but that does massive simplification. The subject sounds esoteric but is relevant (sometimes central) to lots of modern sciences, such as cryptography, condensed matter physics, and quantum field theory.</p>
+
+      <h2>Local-to-global</h2>
+
+      <p>The key concept that relates the two subjects is the local-to-global principle.</p>
+
+      <p>A major part of modern algebraic geometry concerns a somewhat naive question: what is a space? We all have intuitive understanding of what geometry should look like. But like many things in life, a space is something easy to see but very hard to define. For example, most STEM people recognize the interpretation of high dimensional Euclidean space as some kind of coordinate system that you can describe with linear algebra. In this post, we introduce a different notion:</p>
+
+      <blockquote><p>A geometric space is the recipe of how local data &ldquo;glues&rdquo; into global data.</p></blockquote>
+
+      <p>A mental picture is worth more than a thousand words. Start with a rectangular piece of paper and draw arrows along opposite sides. If you paste the paper along the arrows pointing in the same direction, you get a normal band. If you reverse the direction, you get a M&ouml;bius strip.</p>
+
+      <p>These two bands are not the same geometric object. For example, you can trace a connecting loop on the M&ouml;bius strip covering both sides without lifting the pen (try it!), but you can&rsquo;t do that for the cylinder strip. But locally they look the same. If one zooms in on any given point, it all looks the same flat two dimensional space. Imagine some strange tribes living on the M&ouml;bius strip yet not advanced enough to venture far on the surface, they can&rsquo;t distinguish the world they live in from a cylinder band.</p>
+
+      <p>Back to algebraic geometry. The conceptual leap starts with two somewhat simple observations:</p>
+
+      <ol>
+        <li>Instead of geometry itself, one should study relations built on top of it, such as how the geometric spaces transform under maps.</li>
+        <li>One can determine global maps by understanding how they behave locally, as long as there&rsquo;s a coherent way to reconstruct the global transformation from local pieces.</li>
+      </ol>
+
+      <p>I always think of point one using linguistic analogies. Concepts such as &ldquo;lover&rdquo; and &ldquo;child&rdquo; do not exist on their own, but encode presumptions about existing relationships in the subtext. If you fancy modernist literature, this relates to Derrida&rsquo;s concept of diff&eacute;rance, where meanings arise simultaneously via the relationships between words. This sounds abstract but it&rsquo;s not. In practice, one gets a ton more insight by studying how algebraic structures transform instead of looking at objects alone. A classic example is Grothendieck&rsquo;s generalization of Riemann-Roch in the relative setting.</p>
+
+      <p>The second point is more subtle. It relates to the notion of a &ldquo;sheaf&rdquo;, which I&rsquo;ll discuss in the next section.</p>
+
+      <h2>Category theory</h2>
+
+      <p>To define the local-to-global principle requires category theory. Let&rsquo;s do a brief recap.</p>
+
+      <p>A category consists of a collection of objects \(\mathcal{C}\). For objects \(C\) and \(D\) in \(\mathcal{C}\), there is a morphism set \(Mor(C, D)\)<sup class="footnote-ref"><a href="#fn1" id="fnref1">1</a></sup>. The morphisms satisfy the composition rule: for morphisms \(f: C \to D\) and \(g: D \to E\), the composition \(g \circ f\) belongs in the morphism set \(Mor(C, E)\). There are identity morphisms, which generalize the usual identity homomorphisms in groups, rings, modules, etc.</p>
+
+      <p>Category theory is the language that describes how generic mathematical structures are preserved under transformation. Consider two categories \(\mathcal{C}\) and \(\mathcal{D}\). A functor \(\mathcal{F}\) is a structure preserving map in the sense it maps morphisms to morphisms and preserves identity morphisms and composition. For example, given a morphism \(f: C_1 \to C_2\) in the category \(\mathcal{C}\), its image under \(\mathcal{F}\) (assumed to be covariant) is a morphism \(\mathcal{F}(f): \mathcal{F}(C_1) \to \mathcal{F}(C_2)\). The functor \(\mathcal{F}\) is contravariant if it reverses the composition, i.e. \(\mathcal{F}(f)\) has the type signature \(\mathcal{F}(C_2) \to \mathcal{F}(C_1)\). To make it concrete, the study of algebraic topology assigns algebraic invariants to continuous shapes and studies how continuous transformations induce algebraic maps on the algebraic invariants extractable from the shapes. In programming language, the objects often encapsulate things like mutable states and types. For example, a monad abstracts how states and side effects associated with one data type get transformed to downstream data types. The description of monads below is perhaps more familiar to computer scientists.</p>
+
+      <pre><code>-- Monad
+
+-- Core operations
+return :: a -&gt; m a
+(&gt;&gt;=)  :: m a -&gt; (a -&gt; m b) -&gt; m b
+
+-- Monad laws
+
+-- Left identity
+return a &gt;&gt;= f  =  f a
+
+-- Right identity
+m &gt;&gt;= return    =  m
+
+-- Associativity: sequencing order of binds is coherent
+(m &gt;&gt;= f) &gt;&gt;= g =  m &gt;&gt;= (\x -&gt; f x &gt;&gt;= g)</code></pre>
+
+      <h2>Presheaf and sheaf</h2>
+
+      <p>Now, we move one step closer to understanding geometry. We start with a prototype, which allows us to redefine a space &mdash; presheaf.</p>
+
+      <p><strong>Definition (Presheaf).</strong> A presheaf on a category \(\mathcal{C}\) is a contravariant functor \(\mathcal{F}: \mathcal{C} \to \mathbf{Set}\).</p>
+
+      <p>This definition is dense. Let&rsquo;s unpack it. The category \(\mathbf{Set}\) consists of sets as objects<sup class="footnote-ref"><a href="#fn2" id="fnref2">2</a></sup>, and the morphisms are the usual set-theoretic maps. We illustrate this with the standard example of a topological space. Recall that a topological space \(X\) is endowed with a collection of open subsets. For example, if \(X\) is a subset of a Euclidean space, then each open set \(U\) of \(X\), in the subspace topology, is the intersection of \(X\) with the union of a collection of open balls in the standard Euclidean space. The standard set-theoretic inclusion induces a partial order on the open sets. We define the category \(\mathbf{Top}(X)\) such that the objects consist of open sets in \(X\) and the morphism sets consist of the partial ordering from inclusion, i.e. \(U_i \to U_j\) if and only if \(U_i \subset U_j\) as a subset.</p>
+
+      <p>Given an open set \(U_i\), we associate \(\mathcal{F}(U_i)\) with the collection of functions defined on it. We can take the functions to be real valued and define it as</p>
+
+      <p>\[\mathcal{F}(U_i) = \{f: U_i \to \mathbb{R}\}.\]</p>
+
+      <p>This captures the fact that we are trying to understand \(U_i\) by understanding how it maps to real numbers, or the Yoneda lemma if you like category theory (or simply consider a local coordinate chart if you are fond of differential geometry). Then, consider \(U_j \subset U_i\), notice that for any \(f \in \mathcal{F}(U_i)\), the restriction of \(f\) on \(U_j\) is an element of \(\mathcal{F}(U_j)\). This gives us a contravariant functor \(\mathcal{F}: \mathbf{Top}(X) \to \mathbf{Set}\)! A presheaf on \(X\).</p>
+
+      <p>Intuitively, a presheaf captures local compatibility by zooming in onto ever smaller neighborhoods. We generalize the usual set-theoretic inclusion relations for open sets by the abstract arrows \(C \to D\) in the category \(\mathcal{C}\). The payoff is that one can thus talk about &ldquo;space&rdquo; defined on objects that look nothing like a geometric space.</p>
+
+      <p>A presheaf allows one to talk about geometry locally. For global geometry, we need a local-to-global compatibility principle. For \(\mathbf{Top}(X)\), the sheaf condition on an open cover \(U=\bigcup_{i\in I}U_i\) is the equalizer exact sequence</p>
+
+      <p>\[0 \longrightarrow \mathcal{F}(U) \longrightarrow \prod_i \mathcal{F}(U_i) \rightrightarrows \prod_{i,j} \mathcal{F}(U_i \cap U_j).\]</p>
+
+      <p>This just says that any element of \(\mathcal{F}(U)\) can be described as a product of elements in \(\mathcal{F}(U_i)\) satisfying compatible conditions on overlaps. Specifically, we can express an element \(a \in \mathcal{F}(U)\) uniquely as \(a = \prod_k a_k\). For two indexed open sets \(U_i\) and \(U_j\), their intersection \(U_{ij}\) is endowed with two inclusion maps \(\iota_i: U_{ij} \to U_i\) and \(\iota_j: U_{ij} \to U_j\). The sheaf condition says that \(\iota_{i}(a_i) = \iota_j(a_j)\).</p>
+
+      <h3>Stalks</h3>
+
+      <p>One way to think about the sheaf condition is via stalks. A stalk captures local information at a point. Specifically, for \(x \in U\) and a sheaf \(\mathcal{F}\) (working in the topological category as before), its stalk \(\mathcal{F}_x\) is a &ldquo;direct limit&rdquo; of \(\mathcal{F}(U_i)\), where \(U_i\) contains \(x\). This means that we identify two elements \(a_i \in \mathcal{F}(U_i)\) and \(a_j \in \mathcal{F}(U_j)\) if \(U_j \subseteq U_i\) and \(a_i\) maps to \(a_j\) under the morphism induced by \(U_j \to U_i\). For a concrete example, consider the ReLU function and the identically zero function: they look the same when one zooms in around negative numbers as both are identically zero nearby, but not at zero and positive numbers.</p>
+
+      <p>Another way to interpret the sheaf condition is that to specify an element in \(\mathcal{F}(U)\) is to specify a collection of elements at stalks \(\mathcal{F}_x\), where \(x \in U\). Here, &ldquo;compatible&rdquo; means that we can &ldquo;lift&rdquo; the elements at stalk \(\mathcal{F}_x\) to some element of \(\mathcal{F}(U)\), such that \(x \in U\), in a way that satisfies the sheaf condition described above. In general, one works beyond merely the topological category for more flexibility and power (one works with the so-called Grothendieck topology, for example), but we don&rsquo;t develop that generality here. We shall see that the stalk perspective developed here already generalizes beyond topological spaces and appears naturally in distributed computing.</p>
+
+      <h2>Distributed systems</h2>
+
+      <p>One characteristic of distributed systems is that faults that occur on a remote machine can affect the behavior of other machines in the networked system. Reasoning about the correct behavior of a distributed system is no amateur task and is error-prone. The main problem is that there is no notion of centralized time, so in particular different nodes cannot sync with each other based on reading local timestamps. Lamport laid out the right language to discuss patterns in a distributed system in his seminal paper <em>Time, Clocks, and the Ordering of Events in a Distributed System</em> (Lamport 1978). The central observation is that even though there is not a single global time, one can define a partial order, the so-called &ldquo;event ordering&rdquo;, to formalize sequences in a distributed system that encapsulate causal relations.</p>
+
+      <p>We give an example in the more familiar language of a micro-service architecture. Consider a merchandise ordering service. When a user submits an order, the following (in a somewhat simplified procedure) happens:</p>
+
+      <ol>
+        <li>Order creation: the vendor creates the order after performing basic checks, such as inventory availability, etc</li>
+        <li>Database update: the relevant inventory and user order database records are updated.</li>
+        <li>Backend logging: the backend updates metrics, such as user statistics and merchandise trends, etc.</li>
+        <li>User notification: renders front-end updates and notifies the user.</li>
+      </ol>
+
+      <p>The point is that there are causal relations among these steps. Steps 2 and 3 must happen after step 1, and they may or may not happen before step 4. (Step 2 needs to happen eventually for consistency &mdash; the so-called eventual consistency model.) There is no partial ordering relationship in general between step 2 and step 3, which can occur simultaneously as they are logically independent.</p>
+
+      <p>In practice, the services actually processing database and backend updates are located on remote machines, and information flows via the message passing model through remote procedure calls (RPC). Concretely, Lamport&rsquo;s event ordering model says that these messages exchanged by machines in a distributed system decide event sequencing.</p>
+
+      <p>Following common practices in avant-garde literature and certain fields of mathematics, Lamport left the most consequential implication of the event ordering model, implicit in his seminal paper, as an exercise to the curious, voluntary reader:</p>
+
+      <blockquote><p>One can use the event ordering to implement a distributed computing protocol as a state machine.</p></blockquote>
+
+      <h3>Consensus</h3>
+
+      <p>Now back to consensus after all the background and detour. At a high level, the consensus problem asks whether it is possible to design a protocol in which remote nodes cooperate in a distributed system to decide on a single value. A celebrated FLP impossibility result (Fischer et al. 1985) shows that there does not exist a deterministic algorithm that achieves all of consistency, partition fault tolerance, and liveness. The proof structure is modeled after state transitions that really illustrate Lamport&rsquo;s event ordering principle.</p>
+
+      <p>In practice, consensus algorithms, such as Paxos and Raft, trade liveness for consistency and partition fault tolerance. One can extend these algorithms to support resistance towards malicious nodes (Byzantine failures). A central idea that underlies all consensus algorithm design is the notion of a quorum system (Malkhi and Reiter 1999). The idea is that in a quorum system, nodes exchange messages until each node has heard back from a quorum slice, which abstracts the notion of trust from a local node&rsquo;s perspective, and each node in a quorum system has an associated quorum slice contained in it. Intuitively, a quorum system encapsulates the union of all local trust levels assumed by the nodes.</p>
+
+      <p>Of course, the precise definitions and implementation in concrete protocols require additional formalism that is too much to fit into the margin of this post. But the idea is that one can think about quorum systems as resembling the open sets in some topology. This is not just an analogy. The notion is formalized via the concept of semitopology (see e.g. this paper (Gabbay 2023)). The upshot is that the notion of stalks from taking direct limits still makes perfect sense, where one thinks of the sets in the sheaf associated with some quorum system as the possible state transitions partially indexed by message passing carried with additional properties, such as whether or not the state transitions imply that the nodes in the quorum will diverge or converge on proposed or committed values, etc. And one can translate the more standard quorum intertwining and consistency conditions into the sheaf condition language. So far we have only discussed the partition fault tolerance setting, but one easily generalizes to Byzantine faults by working with some kind of &ldquo;subspace topology&rdquo; from restricting to non-Byzantine nodes and imposing coherence conditions there, similar in standard Byzantine quorum intertwining.</p>
+
+      <p>We give a few examples that illustrate how the quorum aspects are implemented in practice in the etcd Raft codebase. The below two code snippets demonstrate the logic of voting for a value after a quorum of nodes ack.</p>
+
+      <pre><code>func (p *ProgressTracker) TallyVotes() (granted int, rejected int, _ quorum.VoteResult) {
+    // ... count granted/rejected from voters ...
+    result := p.Voters.VoteResult(p.Votes)
+    return granted, rejected, result
+}</code></pre>
+
+      <pre><code>func (c MajorityConfig) VoteResult(votes map[uint64]bool) VoteResult {
+    // ...
+    q := len(c)/2 + 1
+    if votedCnt &gt;= q {
+        return VoteWon
+    }
+    ...
+}</code></pre>
+
+      <p>The below two code snippets demonstrate the logic of committing to a value after a quorum of nodes ack.</p>
+
+      <pre><code>if pr.MaybeUpdate(m.GetIndex()) ||
+    (pr.Match == m.GetIndex() &amp;&amp; pr.State == tracker.StateProbe) {
+    switch {
+    case pr.State == tracker.StateProbe:
+        pr.BecomeReplicate()
+    case pr.State == tracker.StateSnapshot &amp;&amp; pr.Match+1 &gt;= r.raftLog.firstIndex():
+        // ...
+        pr.BecomeProbe()
+        pr.BecomeReplicate()
+    case pr.State == tracker.StateReplicate:
+        pr.Inflights.FreeLE(m.GetIndex())
+    }
+    if r.maybeCommit() {
+        // committed index has progressed for the term, so it is safe
+        // to respond to pending read index requests
+        releasePendingReadIndexMessages(r)
+    }
+    ...
+}</code></pre>
+
+      <p>This code snippet below updates the quorum tracker.</p>
+
+      <pre><code>// AckedIndex implements IndexLookuper.
+func (l matchAckIndexer) AckedIndex(id uint64) (quorum.Index, bool) {
+    pr, ok := l[id]
+    if !ok {
+        return 0, false
+    }
+    return quorum.Index(pr.Match), true
+}
+
+// Committed returns the largest log index known to be committed based on what
+// the voting members of the group have acknowledged.
+func (p *ProgressTracker) Committed() uint64 {
+    return uint64(p.Voters.CommittedIndex(matchAckIndexer(p.Progress)))
+}</code></pre>
+
+      <h3>Practical relevance?</h3>
+
+      <p>So far, all the discussion has been on the theory side. I hope this provides an adjacent perspective on thinking about consensus, in addition to digging up scrolls about an ancient civilization (Lamport 1998) in a filing cabinet, or identifying the ambiguity in Paxos Made Simple (Lamport 2001) which Lamport refused to reveal, or trying to parse the TLA+ specs from Paxos and TLA+ notes (Lamport 2019).</p>
+
+      <p>In practice, almost all the complexity in optimizing consensus protocols comes from identifying exploitable partial-ordering structures that arise naturally in applications. For example, Google Spanner (Corbett et al. 2012) goes beyond the FLP impossibility setting by assuming an approximately synchronized global clock. The special structure of network ordering (Li et al. 2016) allows one to reduce Paxos overhead in data centers. Special architectures and RDMA also allow one to redesign state machine replication protocols (Aguilera et al. 2020) for consensus at microsecond scale (compare, for example, with some of what Jane Street (State Machine Replication and Why You Should Care 2024) discusses in practice). It is interesting if some of these perspectives simplify and streamline protocol optimization and enable modular methods for dynamic and static verification of distributed systems protocol implementation.</p>
+
+      <hr />
+
+      <p>Aguilera, Marcos K., Naama Ben-David, Rachid Guerraoui, Virendra J. Marathe, Athanasios Xygkis, and Igor Zablotchi. 2020. &ldquo;Microsecond Consensus for Microsecond Applications.&rdquo; <em>14th USENIX Symposium on Operating Systems Design and Implementation (OSDI 20)</em>, 599&ndash;616. <a href="https://www.usenix.org/system/files/osdi20-aguilera.pdf">https://www.usenix.org/system/files/osdi20-aguilera.pdf</a>.</p>
+
+      <p>Corbett, James C., Jeffrey Dean, Michael Epstein, et al. 2012. &ldquo;Spanner: Google&rsquo;s Globally-Distributed Database.&rdquo; <em>10th USENIX Symposium on Operating Systems Design and Implementation (OSDI 12)</em>, 251&ndash;64. <a href="https://www.usenix.org/conference/osdi12/technical-sessions/presentation/corbett">https://www.usenix.org/conference/osdi12/technical-sessions/presentation/corbett</a>.</p>
+
+      <p>Fischer, Michael J., Nancy A. Lynch, and Michael S. Paterson. 1985. &ldquo;Impossibility of Distributed Consensus with One Faulty Process.&rdquo; <em>Journal of the ACM</em>. <a href="https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf">https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf</a>.</p>
+
+      <p>Gabbay, Murdoch J. 2023. <em>Semitopology: A Topological Approach to Decentralised Collaborative Action</em>. <a href="https://arxiv.org/pdf/2303.09287">https://arxiv.org/pdf/2303.09287</a>.</p>
+
+      <p>Lamport, Leslie. 1978. &ldquo;Time, Clocks, and the Ordering of Events in a Distributed System.&rdquo; <em>Communications of the ACM</em> 21 (7): 558&ndash;65. <a href="https://doi.org/10.1145/359545.359563">https://doi.org/10.1145/359545.359563</a>.</p>
+
+      <p>Lamport, Leslie. 1998. &ldquo;The Part-Time Parliament.&rdquo; <em>ACM Transactions on Computer Systems</em> 16 (2): 133&ndash;69. <a href="https://doi.org/10.1145/279227.279229">https://doi.org/10.1145/279227.279229</a>.</p>
+
+      <p>Lamport, Leslie. 2001. &ldquo;Paxos Made Simple.&rdquo; <em>ACM SIGACT News</em> 32 (4): 51&ndash;58. <a href="https://lamport.azurewebsites.net/pubs/paxos-simple.pdf">https://lamport.azurewebsites.net/pubs/paxos-simple.pdf</a>.</p>
+
+      <p>Lamport, Leslie. 2019. <em>The Paxos Algorithm or How to Win a Turing Award</em>. <a href="https://lamport.azurewebsites.net/tla/paxos-algorithm.html">https://lamport.azurewebsites.net/tla/paxos-algorithm.html</a>.</p>
+
+      <p>Li, Jialin, Ellis Michael, Naveen Kr. Sharma, Adriana Szekeres, and Dan R. K. Ports. 2016. &ldquo;Just Say NO to Paxos Overhead: Replacing Consensus with Network Ordering.&rdquo; <em>12th USENIX Symposium on Operating Systems Design and Implementation (OSDI 16)</em>, 467&ndash;83. <a href="https://www.usenix.org/conference/osdi16/technical-sessions/presentation/li">https://www.usenix.org/conference/osdi16/technical-sessions/presentation/li</a>.</p>
+
+      <p>Malkhi, Dahlia, and Michael Reiter. 1999. <em>Byzantine Quorum Systems</em>. <a href="https://malkhi.com/files/Quorums1999.pdf">https://malkhi.com/files/Quorums1999.pdf</a>.</p>
+
+      <p><em>State Machine Replication and Why You Should Care</em>. 2024. Signals and Threads. <a href="https://signalsandthreads.com/state-machine-replication-and-why-you-should-care/">https://signalsandthreads.com/state-machine-replication-and-why-you-should-care/</a>.</p>
+
+      <div class="footnotes">
+        <ol>
+          <li id="fn1">In general, one does not need to require that the collection of morphisms form a set, as in the case of higher categories. This is far beyond our needs in the post so we work with the more familiar notion. <a href="#fnref1">&#8617;</a></li>
+          <li id="fn2">A careful reader will notice that I used the word &ldquo;collection&rdquo; in the definition of a category to define its objects. This is standard to avoid set-theoretic issues. For example, there is no set that is the &ldquo;set&rdquo; of all sets. Readers interested in logic can look up the definition of a &ldquo;universe&rdquo;. <a href="#fnref2">&#8617;</a></li>
+        </ol>
+      </div>
+
+    </article>
+  </main>
+</body>
+</html>
