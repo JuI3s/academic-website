@@ -114,7 +114,7 @@ h1 {
 .address {
   font-family: var(--sans);
   font-size: 0.9rem;
-  color: var(--text-muted);
+  color: var(--accent);
   margin: 0 0 1.1rem;
 }
 
