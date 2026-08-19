@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sinkhorn iteration as alternating minimization of generalized KL divergence &mdash; Julius Zhang</title>
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://jui3s.github.io/academic-website/blog/sinkhorn.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]] } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body>
+  <main class="container">
+    <nav class="post-nav"><a href="index.html">&larr; Technical Blog</a></nav>
+    <article class="post">
+      <h1 class="post-title">Sinkhorn iteration as alternating minimization of generalized KL divergence</h1>
+      <p class="post-date">18 September 2026</p>
+      <p class="post-tags">
+        <a href="index.html?tag=optimal-transport">Optimal Transport</a>
+        <a href="index.html?tag=computational-mathematics">Computational Mathematics</a>
+      </p>
+
+      <p>Recall that a matrix is doubly stochastic if all the row and column sums are 1 &mdash; that is, each column and row represents a probability distribution. Doubly stochastic matrices show up ubiquitously in computational optimal transport, where they correspond to some notion of the cost matrix. A natural question is the following: given a matrix with positive entries, find the nearest doubly stochastic matrix in some metric.</p>
+
+      <p>This can be solved by Sinkhorn iteration, which amounts to iteratively renormalizing the column and row entries, so that they sum up to 1.</p>
+
+<pre><code>Input: K &gt; 0 (square matrix)
+P &lt;- K
+repeat until convergence:
+    P &lt;- diag(1 / (P 1)) * P          # normalize rows to sum to 1
+    P &lt;- P * diag(1 / (P^T 1))        # normalize columns to sum to 1
+return P
+</code></pre>
+
+      <p>Here, <code>1</code> is the all-ones vector. So <code>P 1</code> is the vector of row sums of <code>P</code>,
+and <code>P^T 1</code> is the vector of column sums of <code>P</code> (division is elementwise).</p>
+
+      <h2>Closest neighbour by generalized KL-divergence</h2>
+
+      <p>Like many problems in applied mathematics and statistics, one gains a lot of perspectives by embedding it into an optimization problem, where the desired formula corresponds to the optimal solution set of some objective function to be minimized. This is the perspective in <a href="https://doi.org/10.1214/aop/1176996454" target="_blank" rel="noopener">Csisz&aacute;r (1975)</a>, which does not appear to show up in common exposition in the machine learning literature.</p>
+
+      <p>Specifically, denote the space of row (resp. col) normalized matrices by</p>
+      \[
+      \mathcal{C}_r = \{P \ge 0 : P\mathbf{1}_n = \mathbf{1}_n\},
+      \]
+      \[
+      \mathcal{C}_c = \{P \ge 0 : P^\top \mathbf{1}_n = \mathbf{1}_n\},
+      \]
+      <p>so that \(\mathcal{C}_r \cap \mathcal{C}_c\) is the set of doubly stochastic matrices. Given a target matrix \(K\), we want to solve the optimization problem of finding the nearest element in the feasible set of doubly stochastic matrices, i.e.</p>
+      \[
+      P^\star
+      = \arg\min_{P \in \mathcal{C}_r \cap \mathcal{C}_c}
+      D_{\mathrm{KL}}(P \,\|\, K),
+      \]
+      <p>where \(D_{\mathrm{KL}}(P \,\|\, K)\) is the generalized KL divergence (I-divergence), i.e.</p>
+      \[
+      D_{\mathrm{KL}}(P \,\|\, K)
+      = \sum_{i,j}\left(P_{ij}\log\frac{P_{ij}}{K_{ij}} - P_{ij} + K_{ij}\right).
+      \]
+      <p>The alternating minimization form is</p>
+      \[
+      P^{(2t+1)}=\arg\min_{P\in\mathcal{C}_r}D_{\mathrm{KL}}(P\,\|\,P^{(2t)}).
+      \]
+      \[
+      P^{(2t+2)}=\arg\min_{P\in\mathcal{C}_c}D_{\mathrm{KL}}(P\,\|\,P^{(2t+1)}).
+      \]
+
+      <p>Without loss of generality, we focus on the row-normalization step, fix
+      \(A:=P^{(2t)}\) and solve</p>
+      \[
+      Q^\star=\arg\min_{Q\in\mathcal{C}_r}D_{\mathrm{KL}}(Q\,\|\,A).
+      \]
+      \[
+      \mathcal{C}_r=\{Q\ge 0:Q\mathbf{1}_n=\mathbf{1}_n\}.
+      \]
+      <p>Its Lagrangian is</p>
+      \[
+      \mathcal{L}(Q,\lambda)=
+      \sum_{i,j}\!\left(Q_{ij}\log\frac{Q_{ij}}{A_{ij}}-Q_{ij}+A_{ij}\right)
+      +\sum_i \lambda_i\!\left(\sum_j Q_{ij}-1\right).
+      \]
+      <p>Differentiate with respect to \(Q_{ij}\) gives</p>
+      \[
+      \frac{\partial \mathcal{L}}{\partial Q_{ij}}
+      =\log\frac{Q_{ij}}{A_{ij}}+\lambda_i=0
+      \quad\Longrightarrow\quad
+      Q_{ij}=A_{ij}e^{-\lambda_i}.
+      \]
+      <p>Enforcing the row constraints gives</p>
+      \[
+      \sum_j Q_{ij}=e^{-\lambda_i}\sum_j A_{ij}
+      \]
+      \[
+      e^{-\lambda_i}\sum_j A_{ij}=1
+      \]
+      \[
+      e^{-\lambda_i}=\frac{1}{\sum_j A_{ij}}.
+      \]
+      <p>Hence</p>
+      \[
+      Q^\star=\mathrm{diag}\!\left(\frac{1}{A\mathbf{1}_n}\right)A,
+      \]
+      <p>which is exactly the Sinkhorn row-normalization update.</p>
+
+      <h2>Convergence</h2>
+
+      <p>Interestingly, the KL-divergence is not a metric, but it satisfies a &ldquo;triangle equality&rdquo; for distributions at each Sinkhorn iteration update. For example, take \(R\) to be a doubly stochastic matrix; then we have</p>
+      \[
+      D_{\mathrm{KL}}(R \,\|\, P^{k}) = D_{\mathrm{KL}}(R \,\|\, P^{k + 1}) + D_{\mathrm{KL}}(P^{k+1} \,\|\, P^{k}),
+      \]
+      <p>which follows from the general formula for how the generalized KL-divergence behaves under the &ldquo;triangle equality&rdquo;, where the correction terms vanish for distributions coming from doubly stochastic matrices. Therefore, by a telescoping argument, the increment \(D_{\mathrm{KL}}(P^{k+1} \,\|\, P^{k})\) goes to zero. Convergence of follows from strict convexity and standard arguments about convergence on compact sets, since vanishing KL increment means that any accumulation point is fixed by the alternating KL projections, hence doubly stochastic.</p>
+    </article>
+  </main>
+</body>
+</html>

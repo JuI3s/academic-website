@@ -11,6 +11,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://jui3s.github.io/academic-website/blog/sinkhorn.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://jui3s.github.io/academic-website/blog/consensus-is-a-sheaf-condition.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
