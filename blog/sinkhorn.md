@@ -5,6 +5,7 @@ date: 2026-09-18
 tags:
   - optimal-transport
   - computational-mathematics
+  - machine-learning
 ---
 
 Recall that a matrix is doubly stochastic if all the row and column sums are 1 --- that is, each column and row represents a probability distribution. Doubly stochastic matrices show up ubiquitously in computational optimal transport, where they correspond to some notion of the cost matrix. A natural question is the following: given a matrix with positive entries, find the nearest doubly stochastic matrix in some metric.
