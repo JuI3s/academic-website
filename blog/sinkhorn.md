@@ -1,7 +1,7 @@
 ---
 title: "Sinkhorn iteration as alternating minimization of generalized KL divergence"
 author: "Julius Zhang"
-date: 2026-09-18
+date: 2026-08-19
 tags:
   - optimal-transport
   - computational-mathematics
