@@ -55,7 +55,7 @@ $$
 P^{(2t+2)}=\arg\min_{P\in\mathcal{C}_c}D_{\mathrm{KL}}(P\,\|\,P^{(2t+1)}).
 $$
 
-Without loss of generality, we focus on the row-normalization step, fix
+Without loss of generality, we focus on the row-normalization step. Fix
 $A:=P^{(2t)}$ and solve
 $$
 Q^\star=\arg\min_{Q\in\mathcal{C}_r}D_{\mathrm{KL}}(Q\,\|\,A).
