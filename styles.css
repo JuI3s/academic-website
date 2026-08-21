@@ -394,8 +394,11 @@ abbr {
 /* ===== Sketches ===== */
 
 .sketch-list {
-  display: grid;
-  gap: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 1.25rem;
 }
 
 .sketch-list figure {
@@ -403,8 +406,9 @@ abbr {
 }
 
 .sketch-list img {
-  width: 100%;
-  max-width: 480px;
+  width: auto;
+  max-width: 280px;
+  max-height: 280px;
   height: auto;
   display: block;
   border-radius: 4px;
