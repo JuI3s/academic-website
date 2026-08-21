@@ -404,11 +404,15 @@ abbr {
   margin: 0;
   flex: 0 0 32%;
   max-width: 32%;
+  aspect-ratio: 1290 / 1360;
+  overflow: hidden;
 }
 
 .sketch-list img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
   display: block;
   border-radius: 4px;
 }
