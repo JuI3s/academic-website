@@ -391,6 +391,24 @@ abbr {
   font-weight: 600;
 }
 
+/* ===== Sketches ===== */
+
+.sketch-list {
+  display: grid;
+  gap: 2rem;
+}
+
+.sketch-list figure {
+  margin: 0;
+}
+
+.sketch-list img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+}
+
 /* ===== Footer ===== */
 
 footer {
