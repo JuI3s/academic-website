@@ -395,7 +395,6 @@ abbr {
 
 .sketch-list {
   display: flex;
-  flex-wrap: wrap;
   align-items: flex-end;
   justify-content: flex-start;
   gap: 1.25rem;
@@ -403,12 +402,12 @@ abbr {
 
 .sketch-list figure {
   margin: 0;
+  flex: 0 0 32%;
+  max-width: 32%;
 }
 
 .sketch-list img {
-  width: auto;
-  max-width: 280px;
-  max-height: 280px;
+  width: 100%;
   height: auto;
   display: block;
   border-radius: 4px;
