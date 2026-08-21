@@ -54,7 +54,7 @@ Colors, fonts, and dark mode are configured via CSS variables at the top of `sty
 
 ## Deploying
 
-Hosted on GitHub Pages at https://jui3s.github.io/academic-website/.
+Hosted on GitHub Pages at https://jui3s.github.io/.
 
 ```bash
 ./build.sh
