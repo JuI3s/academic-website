@@ -3,13 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yondan</title>
+  <title>Yondan &mdash; Julius Zhang</title>
+  <link rel="stylesheet" href="styles.css?v=17" />
   <style>
-    * { margin: 0; }
-    img { display: block; max-width: 480px; width: 100%; height: auto; }
+    .yondan-pic {
+      display: block;
+      max-width: 480px;
+      width: 100%;
+      height: auto;
+      margin: 0 0 1.5rem;
+    }
   </style>
 </head>
 <body>
-  <img src="yondan.jpg" alt="Yondan in Go" />
+  <main class="container">
+    <nav class="post-nav"><a href="index.html">&larr; Julius Zhang</a></nav>
+    <img class="yondan-pic" src="yondan.jpg" alt="Yondan in Go" />
+    <p class="bio">
+      I earned my yondan in Go at 10, before my interests shifted toward
+      mathematics and art in my teenage years. This was years before AlphaGo,
+      when computers were nowhere close to human-level performance, but I had
+      come to think of Go as primarily about pattern recognition, understanding
+      positions intuitively through their &ldquo;geometry&rdquo;. Long before I
+      encountered theoretical computer science or began thinking about geometry,
+      optimization duality, recursive structures, and the interplay of proof and
+      computation, I was fascinated by the complexity of
+      <a href="https://senseis.xmp.net/?RobsonsProofThatGOIsEXPTimeHard" target="_blank" rel="noopener">ko</a>
+      fights.
+    </p>
+  </main>
 </body>
 </html>
