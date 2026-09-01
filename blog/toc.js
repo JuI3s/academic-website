@@ -89,3 +89,64 @@
   document.addEventListener("scroll", update, { passive: true });
   update();
 })();
+
+(function () {
+  const notes = document.querySelector("article.post .footnotes");
+  if (!notes) return;
+
+  const refs = [...document.querySelectorAll('article.post a[id^="fnref"]')];
+  if (!refs.length) return;
+
+  refs.forEach((ref) => {
+    const id = (ref.getAttribute("href") || "").replace("#", "");
+    const li = document.getElementById(id);
+    if (!li) return;
+
+    const sidenote = document.createElement("span");
+    sidenote.className = "post-sidenote";
+
+    const num = document.createElement("sup");
+    num.textContent = ref.textContent.trim();
+    sidenote.appendChild(num);
+    sidenote.append(" ");
+
+    const clone = li.cloneNode(true);
+    clone.querySelectorAll("a[href^='#fnref']").forEach((a) => a.remove());
+    while (clone.firstChild) sidenote.appendChild(clone.firstChild);
+
+    const mark = ref.closest("sup") || ref;
+    mark.after(sidenote);
+  });
+
+  notes.classList.add("has-sidenotes");
+
+  function uncollide() {
+    if (!window.matchMedia("(min-width: 1400px)").matches) return;
+    const sidenotes = [...document.querySelectorAll(".post-sidenote")];
+    let last = -Infinity;
+    sidenotes.forEach((n) => {
+      n.style.marginTop = "";
+      const top = n.getBoundingClientRect().top;
+      if (top < last + 8) n.style.marginTop = last + 8 - top + "px";
+      last = n.getBoundingClientRect().bottom;
+    });
+  }
+
+  function afterMath() {
+    uncollide();
+  }
+
+  if (window.MathJax && MathJax.startup) {
+    MathJax.startup.promise
+      .then(() =>
+        MathJax.typesetPromise
+          ? MathJax.typesetPromise([...document.querySelectorAll(".post-sidenote")])
+          : null
+      )
+      .then(afterMath);
+  } else {
+    requestAnimationFrame(uncollide);
+  }
+
+  window.addEventListener("resize", uncollide);
+})();

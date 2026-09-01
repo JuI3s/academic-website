@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../styles.css?v=22" />
+  <link rel="stylesheet" href="../styles.css?v=24" />
   <script>
     MathJax = { tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]] } };
   </script>
@@ -108,7 +108,10 @@ def t_upper(mu: int, lam: int) -&gt; int:
             pmax = nextprime(p)
             heapq.heappush(heap, item(pmax, 1))
     return math.ceil(total_v)</code></pre>
-      <p>B&uuml;nz, Benedikt, and Ben Fisch. 2023. &ldquo;Multilinear Schwartz-Zippel Mod N and Lattice-Based Succinct Arguments.&rdquo; In Theory of Cryptography &ndash; TCC 2023, Part III, edited by Guy N. Rothblum and Hoeteck Wee, vol. 14371. Lecture Notes in Computer Science. Springer. <a href="https://doi.org/10.1007/978-3-031-48621-0_14">https://doi.org/10.1007/978-3-031-48621-0_14</a>.</p>
+      <h2>References</h2>
+      <ul class="bib-list">
+        <li>B&uuml;nz, Benedikt, and Ben Fisch. 2023. &ldquo;Multilinear Schwartz-Zippel Mod N and Lattice-Based Succinct Arguments.&rdquo; In Theory of Cryptography &ndash; TCC 2023, Part III, edited by Guy N. Rothblum and Hoeteck Wee, vol. 14371. Lecture Notes in Computer Science. Springer. <a href="https://doi.org/10.1007/978-3-031-48621-0_14">https://doi.org/10.1007/978-3-031-48621-0_14</a>.</li>
+      </ul>
       <div class="footnotes">
         <ol>
           <li id="fn1">Very confusingly, the appearance of \(W(\beta_n, \beta_d)\) suppresses the \(\ell_2\)-norm, making it easy to believe that the norm is the \(\ell_{\infty}\)-norm. <a href="#fnref1">&#8617;&#65038;</a></li>
@@ -117,6 +120,6 @@ def t_upper(mu: int, lam: int) -&gt; int:
       </div>
     </article>
   </main>
-  <script src="toc.js?v=3"></script>
+  <script src="toc.js?v=4"></script>
 </body>
 </html>

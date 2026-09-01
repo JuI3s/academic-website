@@ -412,6 +412,56 @@ abbr {
   color: var(--text-muted);
 }
 
+.post .bib-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.post .bib-list li {
+  padding-left: 1.35rem;
+  text-indent: -1.35rem;
+  margin-bottom: 0.85rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.post .bib-list li:last-child {
+  margin-bottom: 0;
+}
+
+.post sup {
+  font-size: 0.7em;
+  line-height: 0;
+}
+
+.post-sidenote {
+  display: none;
+}
+
+@media (min-width: 1400px) {
+  .post-sidenote {
+    display: block;
+    float: right;
+    clear: right;
+    width: 12.5rem;
+    margin: 0.15rem -13.75rem 1rem 0;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: var(--text-muted);
+  }
+
+  .post-sidenote sup {
+    margin-right: 0.15em;
+    color: var(--link);
+  }
+
+  .post .footnotes.has-sidenotes {
+    display: none;
+  }
+}
+
 /* ===== Talks ===== */
 
 .talks-list {

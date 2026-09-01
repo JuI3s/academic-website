@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../styles.css?v=22" />
+  <link rel="stylesheet" href="../styles.css?v=24" />
   <script>
     MathJax = { tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]] } };
   </script>
@@ -227,27 +227,20 @@ func (p *ProgressTracker) Committed() uint64 {
 
       <hr />
 
-      <p>Aguilera, Marcos K., Naama Ben-David, Rachid Guerraoui, Virendra J. Marathe, Athanasios Xygkis, and Igor Zablotchi. 2020. &ldquo;Microsecond Consensus for Microsecond Applications.&rdquo; <em>14th USENIX Symposium on Operating Systems Design and Implementation (OSDI 20)</em>, 599&ndash;616. <a href="https://www.usenix.org/system/files/osdi20-aguilera.pdf">https://www.usenix.org/system/files/osdi20-aguilera.pdf</a>.</p>
-
-      <p>Corbett, James C., Jeffrey Dean, Michael Epstein, et al. 2012. &ldquo;Spanner: Google&rsquo;s Globally-Distributed Database.&rdquo; <em>10th USENIX Symposium on Operating Systems Design and Implementation (OSDI 12)</em>, 251&ndash;64. <a href="https://www.usenix.org/conference/osdi12/technical-sessions/presentation/corbett">https://www.usenix.org/conference/osdi12/technical-sessions/presentation/corbett</a>.</p>
-
-      <p>Fischer, Michael J., Nancy A. Lynch, and Michael S. Paterson. 1985. &ldquo;Impossibility of Distributed Consensus with One Faulty Process.&rdquo; <em>Journal of the ACM</em>. <a href="https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf">https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf</a>.</p>
-
-      <p>Gabbay, Murdoch J. 2023. <em>Semitopology: A Topological Approach to Decentralised Collaborative Action</em>. <a href="https://arxiv.org/pdf/2303.09287">https://arxiv.org/pdf/2303.09287</a>.</p>
-
-      <p>Lamport, Leslie. 1978. &ldquo;Time, Clocks, and the Ordering of Events in a Distributed System.&rdquo; <em>Communications of the ACM</em> 21 (7): 558&ndash;65. <a href="https://doi.org/10.1145/359545.359563">https://doi.org/10.1145/359545.359563</a>.</p>
-
-      <p>Lamport, Leslie. 1998. &ldquo;The Part-Time Parliament.&rdquo; <em>ACM Transactions on Computer Systems</em> 16 (2): 133&ndash;69. <a href="https://doi.org/10.1145/279227.279229">https://doi.org/10.1145/279227.279229</a>.</p>
-
-      <p>Lamport, Leslie. 2001. &ldquo;Paxos Made Simple.&rdquo; <em>ACM SIGACT News</em> 32 (4): 51&ndash;58. <a href="https://lamport.azurewebsites.net/pubs/paxos-simple.pdf">https://lamport.azurewebsites.net/pubs/paxos-simple.pdf</a>.</p>
-
-      <p>Lamport, Leslie. 2019. <em>The Paxos Algorithm or How to Win a Turing Award</em>. <a href="https://lamport.azurewebsites.net/tla/paxos-algorithm.html">https://lamport.azurewebsites.net/tla/paxos-algorithm.html</a>.</p>
-
-      <p>Li, Jialin, Ellis Michael, Naveen Kr. Sharma, Adriana Szekeres, and Dan R. K. Ports. 2016. &ldquo;Just Say NO to Paxos Overhead: Replacing Consensus with Network Ordering.&rdquo; <em>12th USENIX Symposium on Operating Systems Design and Implementation (OSDI 16)</em>, 467&ndash;83. <a href="https://www.usenix.org/conference/osdi16/technical-sessions/presentation/li">https://www.usenix.org/conference/osdi16/technical-sessions/presentation/li</a>.</p>
-
-      <p>Malkhi, Dahlia, and Michael Reiter. 1999. <em>Byzantine Quorum Systems</em>. <a href="https://malkhi.com/files/Quorums1999.pdf">https://malkhi.com/files/Quorums1999.pdf</a>.</p>
-
-      <p><em>State Machine Replication and Why You Should Care</em>. 2024. Signals and Threads. <a href="https://signalsandthreads.com/state-machine-replication-and-why-you-should-care/">https://signalsandthreads.com/state-machine-replication-and-why-you-should-care/</a>.</p>
+      <h2>References</h2>
+      <ul class="bib-list">
+        <li>Aguilera, Marcos K., Naama Ben-David, Rachid Guerraoui, Virendra J. Marathe, Athanasios Xygkis, and Igor Zablotchi. 2020. &ldquo;Microsecond Consensus for Microsecond Applications.&rdquo; <em>14th USENIX Symposium on Operating Systems Design and Implementation (OSDI 20)</em>, 599&ndash;616. <a href="https://www.usenix.org/system/files/osdi20-aguilera.pdf">https://www.usenix.org/system/files/osdi20-aguilera.pdf</a>.</li>
+        <li>Corbett, James C., Jeffrey Dean, Michael Epstein, et al. 2012. &ldquo;Spanner: Google&rsquo;s Globally-Distributed Database.&rdquo; <em>10th USENIX Symposium on Operating Systems Design and Implementation (OSDI 12)</em>, 251&ndash;64. <a href="https://www.usenix.org/conference/osdi12/technical-sessions/presentation/corbett">https://www.usenix.org/conference/osdi12/technical-sessions/presentation/corbett</a>.</li>
+        <li>Fischer, Michael J., Nancy A. Lynch, and Michael S. Paterson. 1985. &ldquo;Impossibility of Distributed Consensus with One Faulty Process.&rdquo; <em>Journal of the ACM</em>. <a href="https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf">https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf</a>.</li>
+        <li>Gabbay, Murdoch J. 2023. <em>Semitopology: A Topological Approach to Decentralised Collaborative Action</em>. <a href="https://arxiv.org/pdf/2303.09287">https://arxiv.org/pdf/2303.09287</a>.</li>
+        <li>Lamport, Leslie. 1978. &ldquo;Time, Clocks, and the Ordering of Events in a Distributed System.&rdquo; <em>Communications of the ACM</em> 21 (7): 558&ndash;65. <a href="https://doi.org/10.1145/359545.359563">https://doi.org/10.1145/359545.359563</a>.</li>
+        <li>Lamport, Leslie. 1998. &ldquo;The Part-Time Parliament.&rdquo; <em>ACM Transactions on Computer Systems</em> 16 (2): 133&ndash;69. <a href="https://doi.org/10.1145/279227.279229">https://doi.org/10.1145/279227.279229</a>.</li>
+        <li>Lamport, Leslie. 2001. &ldquo;Paxos Made Simple.&rdquo; <em>ACM SIGACT News</em> 32 (4): 51&ndash;58. <a href="https://lamport.azurewebsites.net/pubs/paxos-simple.pdf">https://lamport.azurewebsites.net/pubs/paxos-simple.pdf</a>.</li>
+        <li>Lamport, Leslie. 2019. <em>The Paxos Algorithm or How to Win a Turing Award</em>. <a href="https://lamport.azurewebsites.net/tla/paxos-algorithm.html">https://lamport.azurewebsites.net/tla/paxos-algorithm.html</a>.</li>
+        <li>Li, Jialin, Ellis Michael, Naveen Kr. Sharma, Adriana Szekeres, and Dan R. K. Ports. 2016. &ldquo;Just Say NO to Paxos Overhead: Replacing Consensus with Network Ordering.&rdquo; <em>12th USENIX Symposium on Operating Systems Design and Implementation (OSDI 16)</em>, 467&ndash;83. <a href="https://www.usenix.org/conference/osdi16/technical-sessions/presentation/li">https://www.usenix.org/conference/osdi16/technical-sessions/presentation/li</a>.</li>
+        <li>Malkhi, Dahlia, and Michael Reiter. 1999. <em>Byzantine Quorum Systems</em>. <a href="https://malkhi.com/files/Quorums1999.pdf">https://malkhi.com/files/Quorums1999.pdf</a>.</li>
+        <li><em>State Machine Replication and Why You Should Care</em>. 2024. Signals and Threads. <a href="https://signalsandthreads.com/state-machine-replication-and-why-you-should-care/">https://signalsandthreads.com/state-machine-replication-and-why-you-should-care/</a>.</li>
+      </ul>
 
       <div class="footnotes">
         <ol>
@@ -258,6 +251,6 @@ func (p *ProgressTracker) Committed() uint64 {
 
     </article>
   </main>
-  <script src="toc.js?v=3"></script>
+  <script src="toc.js?v=4"></script>
 </body>
 </html>
