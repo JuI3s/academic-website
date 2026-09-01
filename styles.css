@@ -446,6 +446,7 @@ abbr {
     clear: right;
     width: 12.5rem;
     margin: 0.15rem -13.75rem 1rem 0;
+    padding-right: 1.75rem;
     font-family: var(--sans);
     font-size: 0.78rem;
     line-height: 1.45;
