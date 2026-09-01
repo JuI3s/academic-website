@@ -281,6 +281,11 @@ abbr {
   margin: 0 0 2rem;
 }
 
+.post h2,
+.post h3 {
+  scroll-margin-top: 1.25rem;
+}
+
 .post h2 {
   font-size: 1.3rem;
   font-weight: 600;
@@ -291,6 +296,70 @@ abbr {
   border-bottom: none;
   padding-bottom: 0;
   margin: 2rem 0 0.75rem;
+}
+
+.post h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: var(--serif);
+  margin: 1.5rem 0 0.6rem;
+}
+
+.post-toc {
+  display: none;
+}
+
+@media (min-width: 1400px) {
+  .post-toc {
+    display: block;
+    position: fixed;
+    top: 6.5rem;
+    left: max(1.5rem, calc(50% - 460px - 13.5rem));
+    width: 12rem;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+
+  .post-toc-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 1.1rem;
+  }
+
+  .post-toc ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .post-toc li {
+    margin: 0 0 0.9rem;
+  }
+
+  .post-toc .toc-h3 {
+    padding-left: 0.85rem;
+    margin-top: -0.25rem;
+    font-size: 0.78rem;
+  }
+
+  .post-toc a {
+    display: inline-block;
+    color: var(--text-muted);
+    border-bottom: none;
+  }
+
+  .post-toc a:hover {
+    color: var(--text);
+    border-bottom: none;
+  }
+
+  .post-toc a.active {
+    color: var(--text);
+  }
 }
 
 .post pre {

@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../styles.css?v=22" />
   <script>
     MathJax = { tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]] } };
   </script>
@@ -51,5 +51,6 @@
       <p>It turns out Gr&ouml;bner bases relate to Hilbert functions and its computational complexity relates to Castelnuovo-Mumford regularity (also can be used to construct Hilbert schemes). I strongly recommend working through the example in <a href="https://arxiv.org/abs/alg-geom/9304003">[1]</a> to gain intuition. One particular nice thing is that reducing by lexicographic order or reversed lexicographic order is related to projection of the orignal variety to some subspaces (<a href="https://arxiv.org/abs/alg-geom/9304003">[1]</a> discusses really cool connections to flag varieties in birational geoemtry). The upshot is that lexicographic order reduction corresponds to the projection \(\mathbb{P}^n \rightarrow \mathbb{P}^{n-1}\) where \(\mathbb{P}^n\) is viewed as the Thom space of the tautological bundle over \(\mathbb{P}^{n-1}\) and reverse lexicographic order reduction corresponds to projection from the point at infinity. This intuitively explains why in practice reverse lexicographic order reduction works better, as the relevant projection maps are simpler &ndash; which is pretty cool as the hidden geometry is not obvious at all if one only thinks about the ordering.</p>
     </article>
   </main>
+  <script src="toc.js?v=3"></script>
 </body>
 </html>
