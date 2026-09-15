@@ -226,6 +226,16 @@ abbr {
   display: none;
 }
 
+.blog-list li {
+  padding: 0.35rem 0;
+}
+
+.writing-more {
+  margin: 0.75rem 0 0;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+}
+
 .tag-nav {
   display: flex;
   flex-wrap: wrap;
