@@ -529,6 +529,7 @@ abbr {
   align-items: end;
   justify-content: start;
   gap: 1.25rem;
+  margin-top: 0.55rem;
 }
 
 .sketch-list figure {
