@@ -552,8 +552,12 @@ abbr {
 /* ===== Miscellany ===== */
 
 .misc-note {
-  margin: -0.45rem 0 1.75rem;
+  margin: -0.4rem 0 1.75rem;
   color: var(--text-muted);
+}
+
+main h2[id] {
+  scroll-margin-top: 1.25rem;
 }
 
 .misc-list {
