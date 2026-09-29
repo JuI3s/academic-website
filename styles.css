@@ -529,29 +529,24 @@ abbr {
   padding: 0;
 }
 
+.oss-list > li {
+  line-height: 1.5;
+}
+
 .oss-list > li + li {
-  margin-top: 1.2rem;
+  margin-top: 0.7rem;
 }
 
 .oss-name {
-  font-size: 1.1rem;
   font-weight: 600;
 }
 
-.oss-points {
-  margin: 0.3rem 0 0;
-  padding: 0 0 0 1.15rem;
+.oss-keywords {
   color: var(--text-muted);
-  font-size: 1.02rem;
-  line-height: 1.45;
 }
 
-.oss-points li + li {
-  margin-top: 0.12rem;
-}
-
-.oss-points li::marker {
-  color: var(--accent);
+.oss-keywords::before {
+  content: " \2013\00a0";
 }
 
 /* ===== Sketches ===== */
