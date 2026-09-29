@@ -549,6 +549,36 @@ abbr {
   content: " \2013\00a0";
 }
 
+/* ===== Miscellany ===== */
+
+.misc-note {
+  margin: -0.4rem 0 1.75rem;
+  color: var(--text-muted);
+}
+
+.misc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.misc-list li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.misc-list li:last-child {
+  margin-bottom: 0;
+}
+
+.misc-list cite {
+  font-style: italic;
+}
+
+.misc-meta {
+  color: var(--text-muted);
+}
+
 /* ===== Sketches ===== */
 
 .sketch-list {
