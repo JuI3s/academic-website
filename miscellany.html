@@ -4,22 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Miscellany &mdash; Julius Zhang</title>
-  <meta name="description" content="A limited selection of favourite paintings, books, films, and mathematics." />
+  <meta name="description" content="I like to make lists. These are a few, in some of these fields." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://jui3s.github.io/miscellany.html" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=30" />
+  <link rel="stylesheet" href="styles.css?v=31" />
 </head>
 <body>
   <main class="container">
     <nav class="post-nav"><a href="index.html">&larr; Julius Zhang</a></nav>
     <section>
       <h2>Miscellany</h2>
-      <p class="misc-note">A limited selection of favourite paintings, books, films, and mathematics.</p>
+      <nav class="tag-nav" aria-label="Fields">
+        <a href="miscellany.html" data-field="">All</a>
+        <a href="miscellany.html?field=paintings" data-field="paintings">Paintings</a>
+        <a href="miscellany.html?field=books" data-field="books">Books</a>
+        <a href="miscellany.html?field=films" data-field="films">Films</a>
+        <a href="miscellany.html?field=mathematics" data-field="mathematics">Mathematics</a>
+      </nav>
+      <p class="misc-note">I like to make lists. These are a few, in some of these fields.</p>
     </section>
-    <section>
+    <section data-field="paintings">
       <h2>Paintings</h2>
       <ul class="misc-list">
         <li><cite><a href="https://www.museepicassoparis.fr/fr/chefs-d-oeuvre/portrait-dolga-dans-un-fauteuil/" target="_blank" rel="noopener">Olga Picasso</a></cite> <span class="misc-meta">&mdash; Pablo Picasso</span></li>
@@ -36,7 +43,7 @@
         <li><cite><a href="https://www.piasa.fr/en/products/f-sam-szafran-1934-2019-lilette-parmi-les-philodendrons-2009_61939f9fa8723276284191" target="_blank" rel="noopener">Lilette parmi les philodendrons</a></cite> <span class="misc-meta">&mdash; Sam Szafran, 2009</span></li>
       </ul>
     </section>
-    <section>
+    <section data-field="books">
       <h2>Books</h2>
       <ul class="misc-list">
         <li><cite><a href="https://en.wikipedia.org/wiki/A_Spy_in_the_House_of_Love" target="_blank" rel="noopener">A Spy in the House of Love</a></cite> <span class="misc-meta">&mdash; Ana&iuml;s Nin</span></li>
@@ -82,7 +89,7 @@
         <li><cite><a href="https://en.wikipedia.org/wiki/Paradise_Lost" target="_blank" rel="noopener">Paradise Lost</a></cite> <span class="misc-meta">&mdash; John Milton</span></li>
       </ul>
     </section>
-    <section>
+    <section data-field="films">
       <h2>Films</h2>
       <ul class="misc-list">
         <li><cite><a href="https://en.wikipedia.org/wiki/The_Fifth_Element" target="_blank" rel="noopener">The Fifth Element</a></cite> <span class="misc-meta">&mdash; Luc Besson</span></li>
@@ -104,7 +111,7 @@
         <li><cite><a href="https://en.wikipedia.org/wiki/Gattaca" target="_blank" rel="noopener">Gattaca</a></cite> <span class="misc-meta">&mdash; Andrew Niccol</span></li>
       </ul>
     </section>
-    <section>
+    <section data-field="mathematics">
       <h2>Mathematics</h2>
       <ul class="misc-list">
         <li><cite><a href="https://link.springer.com/article/10.1007/BF01218578" target="_blank" rel="noopener">Floer homology</a></cite> <span class="misc-meta">&mdash; Floer</span></li>
@@ -126,5 +133,16 @@
       </ul>
     </section>
   </main>
+  <script>
+    const field = new URLSearchParams(location.search).get("field") || "";
+    document.querySelectorAll(".tag-nav a").forEach((a) => {
+      if (a.dataset.field === field) a.classList.add("active");
+    });
+    if (field) {
+      document.querySelectorAll("section[data-field]").forEach((section) => {
+        section.hidden = section.dataset.field !== field;
+      });
+    }
+  </script>
 </body>
 </html>
