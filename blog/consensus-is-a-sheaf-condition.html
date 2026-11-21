@@ -122,9 +122,9 @@ m &gt;&gt;= return    =  m
 
       <p>Intuitively, a presheaf captures local compatibility by zooming in onto ever smaller neighborhoods. We generalize the usual set-theoretic inclusion relations for open sets by the abstract arrows \(C \to D\) in the category \(\mathcal{C}\). The payoff is that one can thus talk about &ldquo;space&rdquo; defined on objects that look nothing like a geometric space.</p>
 
-      <p>A presheaf allows one to talk about geometry locally. For global geometry, we need a local-to-global compatibility principle. For \(\mathbf{Top}(X)\), the sheaf condition on an open cover \(U=\bigcup_{i\in I}U_i\) is the equalizer exact sequence</p>
+      <p>A presheaf allows one to talk about geometry locally. For global geometry, we need a local-to-global compatibility principle. For \(\mathbf{Top}(X)\), the sheaf condition on an open cover \(U=\bigcup_{i\in I}U_i\) is the equalizer</p>
 
-      <p>\[0 \longrightarrow \mathcal{F}(U) \longrightarrow \prod_i \mathcal{F}(U_i) \rightrightarrows \prod_{i,j} \mathcal{F}(U_i \cap U_j).\]</p>
+      <p>\[\mathcal{F}(U) \longrightarrow \prod_i \mathcal{F}(U_i) \rightrightarrows \prod_{i,j} \mathcal{F}(U_i \cap U_j).\]</p>
 
       <p>This just says that any element of \(\mathcal{F}(U)\) can be described as a product of elements in \(\mathcal{F}(U_i)\) satisfying compatible conditions on overlaps. Specifically, we can express an element \(a \in \mathcal{F}(U)\) uniquely as \(a = \prod_k a_k\). For two indexed open sets \(U_i\) and \(U_j\), their intersection \(U_{ij}\) is endowed with two inclusion maps \(\iota_i: U_{ij} \to U_i\) and \(\iota_j: U_{ij} \to U_j\). The sheaf condition says that \(\iota_{i}(a_i) = \iota_j(a_j)\).</p>
 
